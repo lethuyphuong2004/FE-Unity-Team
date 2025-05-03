@@ -1,5 +1,7 @@
 <template>
   <div class="text-center">
+    Props username value : {{ username }}
+    <br>
     <button
       @click="signInWithGoogle"
       class="px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700"
@@ -7,14 +9,14 @@
       {{ user ? 'Đổi tài khoản' : 'Đăng nhập với Google' }}
     </button>
     <div v-if="user" class="mt-4">
-      <p class="text-lg font-semibold">Xin chào, {{ user.displayName }}!</p>
+      <p class="text-lg font-semibold">Xin chào, display Name {{ user.displayName }}!</p>
       <img
         :src="user.photoURL"
         alt="Avatar"
         class="w-24 h-24 rounded-full mt-2 shadow"
       />
       <button
-        @click="signOut"
+        @click="signOutUser"
         class="mt-4 px-4 py-2 bg-red-600 text-white rounded shadow hover:bg-red-700"
       >
         Đăng xuất
@@ -23,75 +25,101 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, onMounted } from 'vue';
 import { auth, provider, signInWithPopup, signOut } from "../auth/firebase";
 
-export default {
-  data() {
-    return {
-      user: null
-    };
-  },
-  mounted() {
-    this.setupAuthListener();
-  },
-  methods: {
-    async setupAuthListener() {
-      try {
-        const user = await new Promise((resolve, reject) => {
-          const unsubscribe = auth.onAuthStateChanged(
-            user => {
-              unsubscribe();
-              resolve(user);
-            },
-            error => {
-              unsubscribe();
-              reject(error);
-            }
-          );
-        });
-        
-        this.user = user;
-        if (user) {
-          console.log('User data loaded:', JSON.stringify(this.user));
+const props = defineProps({
+  username: String,
+});
+
+const emit = defineEmits(['update:username']);
+
+const user = ref(null);
+
+
+/// PROPS one/two way binding
+const emitUsername = (username) => {
+
+  // if (!username) {
+  //   props.username = 'Guest';
+  // } else {
+  //   props.username = username;
+  // }
+
+  if (!username) {
+    emit('update:username', 'Guest');
+  } else {
+    emit('update:username', username, 'Guest');
+  }
+}
+
+const setupAuthListener = async () => {
+  try {
+    const authUser = await new Promise((resolve, reject) => {
+      const unsubscribe = auth.onAuthStateChanged(
+        user => {
+          unsubscribe();
+          resolve(user);
+        },
+        error => {
+          unsubscribe();
+          reject(error);
         }
-      } catch (error) {
-        console.error('Auth state error:', error);
-        this.showErrorNotification('Failed to check authentication status');
-      }
-    },
+      );
+    });
     
-    async signInWithGoogle() {
-      try {
-        // Đăng xuất trước khi đăng nhập lại (tuỳ chọn)
-        if (this.user) {
-          await signOut(auth);
-        }
-        
-        const result = await signInWithPopup(auth, provider);
-        this.user = result.user;
-        console.log("Đăng nhập thành công:", this.user);
-      } catch (error) {
-        console.error("Lỗi đăng nhập:", error);
-        if (error.code === 'auth/popup-closed-by-user') {
-          this.showErrorNotification('Bạn đã đóng cửa sổ đăng nhập');
-        }
-      }
-    },
+    user.value = authUser;
     
-    async signOut() {
-      try {
-        await signOut(auth);
-        this.user = null;
-        console.log("Đăng xuất thành công");
-      } catch (error) {
-        console.error("Lỗi đăng xuất:", error);
-      }
-    },
+    // cannot update props
+    // props.username = user.value.displayName || 'Guest';
+
+    if (authUser) {
+      emitUsername(user.value.displayName);
+      console.log('User data loaded:', JSON.stringify(user.value));
+    }
+  } catch (error) {
+    console.error('Auth state error:', error);
+    showErrorNotification('Failed to check authentication status');
+  }
+};
+
+const signInWithGoogle = async () => {
+  try {
+    // Optional: Sign out before signing in again
+    if (user.value) {
+      await signOut(auth);
+    }
     
-    showErrorNotification(message) {
-      alert(message);
+    const result = await signInWithPopup(auth, provider);
+    user.value = result.user;
+    emitUsername(user.value.displayName);
+
+    console.log("Đăng nhập thành công:", user.value);
+  } catch (error) {
+    console.error("Lỗi đăng nhập:", error);
+    if (error.code === 'auth/popup-closed-by-user') {
+      showErrorNotification('Bạn đã đóng cửa sổ đăng nhập');
     }
   }
 };
+
+const signOutUser = async () => {
+  try {
+    await signOut(auth);
+    user.value = null;
+    emitUsername(null);
+    console.log("Đăng xuất thành công");
+  } catch (error) {
+    console.error("Lỗi đăng xuất:", error);
+  }
+};
+
+const showErrorNotification = (message) => {
+  alert(message);
+};
+
+onMounted(() => {
+  setupAuthListener();
+});
 </script>
