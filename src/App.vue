@@ -1,17 +1,13 @@
 <template>
-  <ComEvent />
+  <router-view />
 </template>
 
 <script>
-import ComEvent from './components/Event.vue'
-
 export default {
   name: 'App',
-  components: {
-    ComEvent
-  }
-}
+};
 </script>
+
 
 <style>
 #app {

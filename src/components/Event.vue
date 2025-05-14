@@ -4,6 +4,7 @@
       class="event-container"
       v-for="(event, index) in events"
       :key="index"
+      @click="goToDetail(event.id)"
     >
       <img :src="event.image" alt="Event Banner" class="event-image" />
       <h2 class="event-title">{{ event.title }}</h2>
@@ -32,17 +33,19 @@ export default {
   methods: {
     async fetchEventData() {
       try {
-        const response = await axios.get(
-          'https://682429e865ba058033991d94.mockapi.io/event_api'
-        );
+        const response = await axios.get('https://682429e865ba058033991d94.mockapi.io/event_api');
         this.events = response.data;
       } catch (error) {
         console.error('Lỗi khi tải dữ liệu sự kiện:', error);
       }
     },
+    goToDetail(id) {
+      this.$router.push(`/event/${id}`);
+    },
   },
 };
 </script>
+
 
 <style scoped>
 .event-list {
@@ -55,11 +58,20 @@ export default {
   font-family: sans-serif;
 }
 
+
+.event-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
 .event-container {
   border: 1px solid #ddd;
   border-radius: 10px;
   padding: 1rem;
+  transition: box-shadow 0.2s;
 }
+
 
 .event-image {
   width: 100%;
@@ -87,4 +99,5 @@ export default {
   padding: 2rem;
   color: gray;
 }
+
 </style>
