@@ -1,13 +1,23 @@
 <template>
-  <router-view />
+  <div id="app">
+    <ComHeader />
+    <router-view />
+    <ComFooter />
+  </div>
 </template>
 
 <script>
+import ComHeader from './components/ComHeader.vue';
+import ComFooter from './components/ComFooter.vue';
+
 export default {
   name: 'App',
+  components: {
+    ComHeader,
+    ComFooter
+  }
 };
 </script>
-
 
 <style>
 #app {
