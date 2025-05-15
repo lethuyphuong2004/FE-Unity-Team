@@ -9,6 +9,11 @@
         <li>
           <a href="/profile" class="hover:text-accent transition">User Profile</a>
         </li>
+
+        <li>
+          <a href="/auth" class="hover:text-accent transition">Auth</a>
+        </li>
+
       </ul>
     </div>
   </nav>

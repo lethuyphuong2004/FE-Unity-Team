@@ -8,5 +8,5 @@
   import GoogleLogin from '../components/GoogleLogin.vue';
 
   import { ref } from 'vue'; 
-  const username = ref('Guest');
+  const username = ref('Guest Hello');
 </script>

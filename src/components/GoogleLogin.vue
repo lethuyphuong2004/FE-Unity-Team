@@ -10,18 +10,26 @@
     </button>
     <div v-if="user" class="mt-4">
       <p class="text-lg font-semibold">Xin chào, display Name {{ user.displayName }}!</p>
+    </div>
+
+    <div v-if="user" class="flex flex-col items-center mt-4">
       <img
         :src="user.photoURL"
         alt="Avatar"
         class="w-24 h-24 rounded-full mt-2 shadow"
       />
+    </div>
+
+    <div v-if="user" class="mt-4">
       <button
         @click="signOutUser"
         class="mt-4 px-4 py-2 bg-red-600 text-white rounded shadow hover:bg-red-700"
       >
-        Đăng xuất
+        Logout
       </button>
     </div>
+
+
   </div>
 </template>
 
