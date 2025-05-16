@@ -7,7 +7,7 @@ import Auth from '../views/auth.vue';
 const routes = [
     { path: '/', name: 'Home', component: Home },
     { path: '/profile', name: 'Profile', component: Profile },
-    { path: '/auth', name: 'Profile', component: Auth },
+    { path: '/auth', name: 'Auth', component: Auth },
 ];
 
 // Create router instance
