@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row">
         <div class="footer-col">
-          <img src="@/assets/VN is awesome/VN.jpg" alt="Logo" class="logo" />
+          <img src="@/assets/VIA/VN.jpg" alt="Logo" class="logo" />
           <p>© 2025 Vietnam Is Awesome. All rights reserved.</p>
           <p>2nd Floor, 56 To Hien, Thanh My Loi Ward, Thu Duc, Ho Chi Minh City, Vietnam</p>
           <p>
