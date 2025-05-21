@@ -1,23 +1,23 @@
 <template>
-  <div v-if="event" class="event-detail">
-    <div class="event-image-container">
+  <div v-if="event" class="max-w-3xl mx-auto p-4 flex flex-col gap-8 font-sans">
+    <div class="overflow-hidden rounded-xl">
       <img
         :src="event.image"
         alt="Event Banner"
-        class="event-image"
+        class="w-full max-h-[400px] object-cover rounded-xl transition-transform duration-300 hover:scale-105"
       />
     </div>
-    <h1 class="event-title">{{ event.title }}</h1>
-    <p class="event-description">{{ event.description }}</p>
+    <h1 class="text-3xl font-bold text-left">{{ event.title }}</h1>
+    <p class="text-lg text-gray-600 text-left">{{ event.description }}</p>
     <button
       @click="$router.push('/')"
-      class="back-button"
+      class="mt-4 inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors duration-300"
     >
       <i class="fas fa-arrow-left"></i> Quay lại danh sách
     </button>
   </div>
 
-  <div v-else class="loading">
+  <div v-else class="text-center p-8 text-gray-500 font-medium">
     Đang tải chi tiết sự kiện...
   </div>
 </template>
@@ -48,62 +48,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.event-detail {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  max-width: 800px;
-  margin: auto;
-  padding: 1rem;
-  font-family: sans-serif;
-}
-
-.event-image-container {
-  overflow: hidden;
-  border-radius: 10px;
-}
-
-.event-image {
-  width: 100%;
-  max-height: 400px;
-  object-fit: cover;
-  border-radius: 10px;
-  transition: transform 0.3s;
-}
-
-.event-title {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
-  text-align: left;
-}
-
-.event-description {
-  font-size: 1.2rem;
-  color: #555;
-  text-align: left;
-}
-
-.back-button {
-  margin-top: 1rem;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  background-color: #006eff;
-  color: white;
-  border-radius: 30px;
-  text-decoration: none;
-  transition: background-color 0.3s;
-}
-
-.back-button:hover {
-  background-color: #0008ff;
-}
-
-.loading {
-  text-align: center;
-  padding: 2rem;
-  color: gray;
-}
-</style>

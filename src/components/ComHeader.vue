@@ -4,7 +4,7 @@
     <div class="left-column">
       <div class="dropdown">
         <div class="dropdown-trigger" @click="toggleDropdown">
-          <img src="@/assets/VIA/VN.jpg" class="logo-img" alt="VN Logo" />
+          <img src="@/assets/VIA/VN2.png" class="logo-img" alt="VN Logo" />
           <span class="dropdown-icon">▾</span>
         </div>
 

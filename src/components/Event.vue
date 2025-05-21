@@ -1,18 +1,22 @@
 <template>
-  <div v-if="events.length" class="event-list">
+  <div v-if="events.length" class="max-w-3xl mx-auto p-4 flex flex-col gap-8 font-sans">
     <div
-      class="event-container"
       v-for="(event, index) in events"
       :key="index"
       @click="goToDetail(event.id)"
+      class="border border-gray-300 rounded-xl p-6 cursor-pointer hover:shadow-lg transition-shadow duration-200"
     >
-      <img :src="event.image" alt="Event Banner" class="event-image" />
-      <h2 class="event-title">{{ event.title }}</h2>
-      <p class="event-description">{{ event.description }}</p>
+      <img
+        :src="event.image"
+        alt="Event Banner"
+        class="w-full max-h-[400px] object-cover rounded-xl mb-4"
+      />
+      <h2 class="text-2xl font-bold mb-4 text-left text-indigo-700">{{ event.title }}</h2>
+      <p class="text-gray-600 text-left">{{ event.description }}</p>
     </div>
   </div>
 
-  <div v-else class="loading">
+  <div v-else class="text-center p-8 text-gray-500 font-medium">
     Đang tải dữ liệu sự kiện...
   </div>
 </template>
@@ -45,59 +49,3 @@ export default {
   },
 };
 </script>
-
-
-<style scoped>
-.event-list {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  max-width: 800px;
-  margin: auto;
-  padding: 1rem;
-  font-family: sans-serif;
-}
-
-
-.event-link {
-  text-decoration: none;
-  color: inherit;
-  display: block;
-}
-
-.event-container {
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 1rem;
-  transition: box-shadow 0.2s;
-}
-
-
-.event-image {
-  width: 100%;
-  max-height: 400px;
-  object-fit: cover;
-  border-radius: 10px;
-  margin-bottom: 1rem;
-}
-
-.event-title {
-  font-size: 1.8rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
-  text-align: left;
-}
-
-.event-description {
-  font-size: 1rem;
-  color: #555;
-  text-align: left;
-}
-
-.loading {
-  text-align: center;
-  padding: 2rem;
-  color: gray;
-}
-
-</style>
