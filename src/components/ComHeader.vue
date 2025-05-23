@@ -4,112 +4,120 @@
     <div class="left-column">
       <div class="dropdown">
         <div class="dropdown-trigger" @click="toggleDropdown">
-          <img src="@/assets/VIA/VN2.png" class="logo-img" alt="VN Logo" />
+        <router-link to="/" class="logo-img-link">
+  <img src="@/assets/VIA/VN2.png" class="logo-img" alt="VN Logo" />
+</router-link>
+
           <span class="dropdown-icon">▾</span>
         </div>
 
-        <div v-if="isDropdownOpen" class="dropdown-menu">
-          <div class="dropdown-item" @click.stop="openShortcutsModal">
-            <span class="icon">⌨️</span>
-            <span>Keyboard shortcuts</span>
+           <!-- Dropdown -->
+        <div v-if="isDropdownOpen" class="absolute mt-12 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-md z-50">
+          <div @click.stop="openShortcutsModal" class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+            ⌨️ Keyboard Shortcuts
           </div>
-          <div class="dropdown-item" @click.stop="toggleDarkMode">
-            <span class="icon">🌙</span>
-            <span>Switch to {{ isDarkMode ? 'light' : 'dark' }} mode</span>
+          <div @click.stop="toggleDarkMode" class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+            🌙 Switch to {{ isDarkMode ? 'Light' : 'Dark' }} Mode
           </div>
         </div>
       </div>
-    </div>
-
-    <!-- CENTER: Navigation -->
-    <nav class="nav-bar">
-      <router-link to="/Home">Home</router-link>
-      <router-link to="/">Event</router-link>
-      <router-link to="/about">About</router-link>
-      <router-link to="/Challenges">Challenges</router-link>
-    </nav>
-
-    <!-- RIGHT: Search + Buttons -->
-    <div class="right-side">
-      <div class="search-box">
-        🔍 <span>Search</span>
       </div>
-      <button class="login-btn">Log in</button>
-      <button class="join-btn">Join</button>
-    </div>
 
-    <!-- Modal: Keyboard Shortcuts -->
-    <div v-if="showShortcutsModal" class="modal-overlay" @click.self="closeShortcutsModal">
-      <div class="modal-content">
-        <h2>⌨️ Keyboard Shortcuts</h2>
-        <ul class="shortcut-list">
-  <li v-for="item in shortcuts" :key="item.id">
-    <strong>{{ item.shortcut }}</strong>: {{ item.action }}
-  </li>
-</ul>
+     <!-- Center: Navigation -->
+      <nav class="nav-bar hidden md:flex gap-6 font-semibold text-gray-800 dark:text-gray-100">
+        <router-link to="/Home" class="hover:text-red-600">Home</router-link>
+        <router-link to="/" class="hover:text-red-600">Event</router-link>
+        <router-link to="/about" class="hover:text-red-600">About</router-link>
+        <router-link to="/Challenges" class="hover:text-red-600">Challenges</router-link>
+      </nav>
 
-        <button class="close-btn" @click="closeShortcutsModal">Close</button>
+    <!-- Right: Search + Buttons -->
+      <div class="hidden md:flex items-center gap-3">
+        <div class="px-3 py-1 border rounded-full text-sm text-gray-600 dark:text-gray-200 dark:border-gray-600">
+          🔍 Search
+        </div>
+        <button class="px-4 py-1 border rounded-full text-sm font-medium">Log in</button>
+        <button class="px-4 py-1 bg-red-600 text-white rounded-full text-sm font-medium">Join</button>
       </div>
-    </div>
 
-    <hr class="bottom-border" />
+      <!-- Hamburger (Mobile) -->
+<button @click="toggleMobileMenu" class="md:hidden text-gray-800 dark:text-gray-200">
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path v-if="!showMobileMenu" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+      d="M4 6h16M4 12h16M4 18h16" />
+    <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+      d="M6 18L18 6M6 6l12 12" />
+  </svg>
+</button>
+
+      <!-- Mobile Menu (ngang, gồm cả điều hướng + login/join) -->
+<div v-if="showMobileMenu" class="md:hidden flex flex-wrap justify-center gap-3 mt-2 text-sm font-semibold text-gray-800 dark:text-gray-100">
+  <button class="px-3 py-1 border rounded-full hover:text-red-600">Log in</button>
+  <button class="px-3 py-1 bg-red-600 text-white rounded-full">Join</button>
+</div>
+
+    <!-- Modal Shortcuts -->
+<div
+  v-if="showShortcutsModal"
+  class="modal-overlay"
+  @click.self="closeShortcutsModal"
+>
+  <div class="modal-box">
+    <h2 class="modal-title">⌨️ Keyboard Shortcuts</h2>
+    <ul class="shortcut-list">
+      <li v-for="item in shortcuts" :key="item.id">
+        <strong>{{ item.shortcut }}</strong>: {{ item.action }}
+      </li>
+    </ul>
+    <button @click="closeShortcutsModal" class="modal-close-btn">
+      Close
+    </button>
+  </div>
+</div>
+
   </header>
 </template>
 
 <script setup>
-import axios from 'axios'
 import { ref, onMounted, watchEffect } from 'vue'
-
-const shortcuts = ref([])
-
-const fetchShortcuts = async () => {
-  try {
-    const res = await axios.get('https://67345ca9a042ab85d119d8eb.mockapi.io/shortcuts')
-    shortcuts.value = res.data
-  } catch (err) {
-    console.error('Failed to load shortcuts:', err)
-  }
-}
-
-onMounted(() => {
-  fetchShortcuts()
-})
+import axios from 'axios'
 
 const isDropdownOpen = ref(false)
-const isDarkMode = ref(false)
+const showMobileMenu = ref(false)
 const showShortcutsModal = ref(false)
+const isDarkMode = ref(false)
+const shortcuts = ref([])
 
-const toggleDropdown = () => {
-  isDropdownOpen.value = !isDropdownOpen.value
-}
+const toggleDropdown = () => isDropdownOpen.value = !isDropdownOpen.value
+const toggleMobileMenu = () => showMobileMenu.value = !showMobileMenu.value
+const openShortcutsModal = () => showShortcutsModal.value = true
+const closeShortcutsModal = () => showShortcutsModal.value = false
 
 const toggleDarkMode = () => {
   isDarkMode.value = !isDarkMode.value
   document.documentElement.classList.toggle('dark', isDarkMode.value)
 }
 
-const openShortcutsModal = () => {
-  showShortcutsModal.value = true
-}
+onMounted(async () => {
+  try {
+    const res = await axios.get('https://67345ca9a042ab85d119d8eb.mockapi.io/shortcuts')
+    shortcuts.value = res.data
+  } catch (err) {
+    console.error('Failed to fetch shortcuts:', err)
+  }
 
-const closeShortcutsModal = () => {
-  showShortcutsModal.value = false
-}
-
-// Load dark mode from localStorage
-onMounted(() => {
-  const storedMode = localStorage.getItem('darkMode') === 'true'
-  if (storedMode) {
+  const savedMode = localStorage.getItem('darkMode') === 'true'
+  if (savedMode) {
     isDarkMode.value = true
     document.documentElement.classList.add('dark')
   }
 })
 
-// Save dark mode preference
 watchEffect(() => {
   localStorage.setItem('darkMode', isDarkMode.value)
 })
 </script>
+
 
 <style scoped>
 /* === Header Layout === */
@@ -149,7 +157,7 @@ watchEffect(() => {
   display: flex;
   gap: 24px;
   font-weight: 600;
-  font-size: 20px;
+  font-size: 15px;
 }
 
 .nav-bar a {
@@ -250,6 +258,74 @@ watchEffect(() => {
   font-size: 16px;
 }
 
+/* Overlay */
+.modal-overlay {
+  position: fixed;
+  inset: 0; /* top:0; right:0; bottom:0; left:0; */
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 1rem; /* tạo khoảng cách khi màn hình nhỏ */
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* nền đen mờ */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-box {
+  background-color: #ffffff;
+  color: #111111;
+  padding: 24px;
+  width: 320px;
+  max-width: 90%;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+  font-family: 'Segoe UI', sans-serif;
+  transition: all 0.3s ease;
+}
+
+.modal-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.shortcut-list {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 16px;
+}
+
+.shortcut-list li {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.modal-close-btn {
+  margin-top: 12px;
+  padding: 8px 16px;
+  background-color: #e03a3c;
+  color: white;
+  border: none;
+  border-radius: 9999px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.modal-close-btn:hover {
+  background-color: #c53030;
+}
+
+
 /* === Modal === */
 .modal-overlay {
   position: fixed;
@@ -349,4 +425,58 @@ watchEffect(() => {
   background-color: #2b2b2b;
   color: white;
 }
+
+/* === Responsive (mobile) giữ layout ngang === */
+@media (max-width: 768px) {
+  .header {
+    flex-wrap: nowrap; /* giữ header nằm ngang */
+    padding: 12px 16px;
+    height: auto;
+  }
+
+  .logo-img {
+    height: 20px;
+  }
+
+  .nav-bar {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .nav-bar a {
+    flex-shrink: 0;
+  }
+
+  .right-side {
+    display: none; /* ẩn nút search/login/join */
+  }
+
+  .mobile-menu {
+    position: absolute;
+    top: 72px;
+    left: 0;
+    right: 0;
+    background-color: white;
+    border-top: 1px solid #eee;
+    padding: 8px 16px;
+    z-index: 40;
+  }
+
+  .mobile-menu a {
+    display: block;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+  }
+
+  .dropdown-menu {
+    width: 180px;
+    right: auto;
+    left: 0;
+  }
+}
+
+
+
 </style>

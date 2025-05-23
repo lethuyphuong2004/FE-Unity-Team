@@ -3,7 +3,6 @@
     <div
       v-for="(event, index) in events"
       :key="index"
-      @click="goToDetail(event.id)"
       class="border border-gray-300 rounded-xl p-6 cursor-pointer hover:shadow-lg transition-shadow duration-200"
     >
       <img
@@ -12,7 +11,16 @@
         class="w-full max-h-[400px] object-cover rounded-xl mb-4"
       />
       <h2 class="text-2xl font-bold mb-4 text-left text-indigo-700">{{ event.title }}</h2>
-      <p class="text-gray-600 text-left">{{ event.description }}</p>
+      <p class="text-gray-600 text-left mb-4 line-clamp-4">
+        {{ event.description }}
+      </p>
+
+      <span
+        @click.stop="goToDetail(event.id)"
+        class="text-indigo-600 hover:underline cursor-pointer"
+      >
+        Xem chi tiết
+      </span>
     </div>
   </div>
 
@@ -49,3 +57,11 @@ export default {
   },
 };
 </script>
+<style scoped>
+.line-clamp-4 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+</style>
