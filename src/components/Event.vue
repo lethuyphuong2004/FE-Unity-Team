@@ -4,6 +4,7 @@
       v-for="(event, index) in events"
       :key="index"
       class="border border-gray-300 rounded-xl p-6 cursor-pointer hover:shadow-lg transition-shadow duration-200"
+      @click="goToDetail(event.id)"
     >
       <img
         :src="event.image"
@@ -16,8 +17,7 @@
       </p>
 
       <span
-        @click.stop="goToDetail(event.id)"
-        class="text-indigo-600 hover:underline cursor-pointer"
+        class="text-indigo-600 hover:underline"
       >
         Xem chi tiết
       </span>

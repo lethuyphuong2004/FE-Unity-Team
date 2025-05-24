@@ -1,47 +1,34 @@
 <template>
-  <header class="header">
-    <!-- LEFT: Logo + Events -->
-    <div class="left-column">
-      <div class="dropdown">
-        <div class="dropdown-trigger" @click="toggleDropdown">
-        <router-link to="/" class="logo-img-link">
-  <img src="@/assets/VIA/VN2.png" class="logo-img" alt="VN Logo" />
-</router-link>
+  <header class="relative bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow">
+    <!-- Grid layout -->
+    <div class="grid grid-cols-3 items-center px-6 py-3">
+      <!-- LEFT: Logo + Dropdown -->
+      <div class="flex items-center gap-2">
+        <div class="relative flex items-center cursor-pointer" @click="toggleDropdown">
+          <router-link to="/" class="mr-1">
+            <img src="@/assets/VIA/VN2.png" class="h-10 w-auto" alt="VN Logo" />
+          </router-link>
+          <span class="text-xl">▾</span>
 
-          <span class="dropdown-icon">▾</span>
-        </div>
-
-           <!-- Dropdown -->
-        <div v-if="isDropdownOpen" class="absolute mt-12 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-md z-50">
-          <div @click.stop="openShortcutsModal" class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
-            ⌨️ Keyboard Shortcuts
+          <!-- Dropdown -->
+          <div v-if="isDropdownOpen" class="absolute top-14 left-0 w-60 bg-white dark:bg-gray-800 shadow-lg rounded-md z-50">
+            <div @click.stop="openShortcutsModal" class="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+              <span class="w-6 text-center">⌨️</span>
+              <span class="ml-2">Keyboard Shortcuts</span>
+            </div>
+            <div @click.stop="toggleDarkMode" class="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+              <span class="w-6 text-center">🌙</span>
+              <span class="ml-2">Switch to {{ isDarkMode ? 'Light' : 'Dark' }} Mode</span>
+            </div>
           </div>
-          <div @click.stop="toggleDarkMode" class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
-            🌙 Switch to {{ isDarkMode ? 'Light' : 'Dark' }} Mode
-          </div>
         </div>
-      </div>
-      </div>
+      
 
-     <!-- Center: Navigation -->
-      <nav class="nav-bar hidden md:flex gap-6 font-semibold text-gray-800 dark:text-gray-100">
-        <router-link to="/Home" class="hover:text-red-600">Home</router-link>
-        <router-link to="/" class="hover:text-red-600">Event</router-link>
-        <router-link to="/about" class="hover:text-red-600">About</router-link>
-        <router-link to="/Challenges" class="hover:text-red-600">Challenges</router-link>
-      </nav>
-
-    <!-- Right: Search + Buttons -->
-      <div class="hidden md:flex items-center gap-3">
-        <div class="px-3 py-1 border rounded-full text-sm text-gray-600 dark:text-gray-200 dark:border-gray-600">
-          🔍 Search
-        </div>
-        <button class="px-4 py-1 border rounded-full text-sm font-medium">Log in</button>
-        <button class="px-4 py-1 bg-red-600 text-white rounded-full text-sm font-medium">Join</button>
-      </div>
-
-      <!-- Hamburger (Mobile) -->
-<button @click="toggleMobileMenu" class="md:hidden text-gray-800 dark:text-gray-200">
+      <!-- Hamburger Button (Mobile only) -->
+    <button 
+  @click="toggleMobileMenu" 
+  class="md:hidden text-gray-800 dark:text-gray-200 absolute right-7 top-0 m-5"
+>
   <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
     <path v-if="!showMobileMenu" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
       d="M4 6h16M4 12h16M4 18h16" />
@@ -50,33 +37,67 @@
   </svg>
 </button>
 
-      <!-- Mobile Menu (ngang, gồm cả điều hướng + login/join) -->
-<div v-if="showMobileMenu" class="md:hidden flex flex-wrap justify-center gap-3 mt-2 text-sm font-semibold text-gray-800 dark:text-gray-100">
-  <button class="px-3 py-1 border rounded-full hover:text-red-600">Log in</button>
-  <button class="px-3 py-1 bg-red-600 text-white rounded-full">Join</button>
+
+</div>
+    
+
+    <!-- Desktop Navigation -->
+    <nav class="hidden md:flex justify-center gap-6 font-semibold text-gray-800 dark:text-gray-100">
+      <router-link to="/Home" class="hover:text-red-600">Home</router-link>
+      <router-link to="/" class="hover:text-red-600">Event</router-link>
+      <router-link to="/about" class="hover:text-red-600">About</router-link>
+      <router-link to="/Challenges" class="hover:text-red-600">Challenges</router-link>
+    </nav>
+
+    <!-- Desktop Auth Buttons -->
+    <div class="hidden md:flex items-center justify-end gap-3 px-6 py-3">
+      <div class="px-3 py-1 border rounded-full text-sm text-gray-600 dark:text-gray-200 dark:border-gray-600">
+        🔍 Search
+      </div>
+      <button class="px-4 py-1 border rounded-full text-sm font-medium">Log in</button>
+      <button class="px-4 py-1 bg-red-600 text-white rounded-full text-sm font-medium">Join</button>
+    </div>
+
+    <div>
+    <!-- Mobile Menu (Vertical) -->
+   <transition name="slide-down">
+  <div
+    v-if="showMobileMenu"
+    class="md:hidden fixed top-16 right-4 w-48 bg-white dark:bg-gray-900 border dark:border-gray-700 rounded-lg px-3 py-3 shadow-xl z-50 space-y-2"
+  >
+    <router-link to="/Home" class="block text-gray-800 dark:text-gray-100 hover:text-red-600 font-medium">Home</router-link>
+    <router-link to="/" class="block text-gray-800 dark:text-gray-100 hover:text-red-600 font-medium">Event</router-link>
+    <router-link to="/about" class="block text-gray-800 dark:text-gray-100 hover:text-red-600 font-medium">About</router-link>
+    <router-link to="/Challenges" class="block text-gray-800 dark:text-gray-100 hover:text-red-600 font-medium">Challenges</router-link>
+
+    <div class="pt-4 border-t dark:border-gray-700">
+      <button class="w-full text-left px-3 py-2 border rounded-full text-sm hover:text-red-600">Log in</button>
+      <button class="w-full mt-2 px-3 py-2 bg-red-600 text-white rounded-full text-sm">Join</button>
+    </div>
+  </div>
+</transition>
 </div>
 
     <!-- Modal Shortcuts -->
-<div
-  v-if="showShortcutsModal"
-  class="modal-overlay"
-  @click.self="closeShortcutsModal"
->
-  <div class="modal-box">
-    <h2 class="modal-title">⌨️ Keyboard Shortcuts</h2>
-    <ul class="shortcut-list">
-      <li v-for="item in shortcuts" :key="item.id">
-        <strong>{{ item.shortcut }}</strong>: {{ item.action }}
-      </li>
-    </ul>
-    <button @click="closeShortcutsModal" class="modal-close-btn">
-      Close
-    </button>
-  </div>
-</div>
-
+    <div
+      v-if="showShortcutsModal"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      @click.self="closeShortcutsModal"
+    >
+      <div class="bg-white dark:bg-gray-800 text-gray-800 dark:text-white p-6 w-80 rounded-xl shadow-xl">
+        <h2 class="text-lg font-bold mb-4">⌨️ Keyboard Shortcuts</h2>
+        <ul class="space-y-2 text-sm">
+          <li v-for="item in shortcuts" :key="item.id">
+            <strong>{{ item.shortcut }}</strong>: {{ item.action }}
+          </li>
+        </ul>
+        <button @click="closeShortcutsModal" class="mt-4 px-4 py-2 bg-red-600 text-white rounded-full text-sm">Close</button>
+      </div>
+    </div>
+    </div>
   </header>
 </template>
+
 
 <script setup>
 import { ref, onMounted, watchEffect } from 'vue'
@@ -127,30 +148,23 @@ watchEffect(() => {
   z-index: 50;
   display: flex;
   justify-content: space-between;
-  align-items: center; /* <-- đảm bảo các phần tử con canh giữa dọc */
+  align-items: center; /* Canh giữa dọc */
   padding: 0 24px;
   height: 72px;
   background-color: #fff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   font-family: 'Arial', sans-serif;
 }
+
 .left-column {
   display: flex;
   align-items: center;
-   gap: 6px;
+  gap: 6px;
 }
 
 .logo-img {
   height: 58px;
   width: auto;
-}
-
-.events-text {
-  font-weight: 600;
-  font-size: 14px;
-  color: #111;
-  margin-top: 2px;
-    margin: 0; 
 }
 
 .nav-bar {
@@ -222,10 +236,6 @@ watchEffect(() => {
   cursor: pointer;
 }
 
-.dropdown-icon {
-  color: #333;
-}
-
 .dropdown-menu {
   position: absolute;
   top: 100%;
@@ -247,29 +257,14 @@ watchEffect(() => {
   font-size: 14px;
   color: #111;
   transition: background-color 0.2s;
+  cursor: pointer;
 }
 
 .dropdown-item:hover {
   background-color: #f4f4f4;
-  cursor: pointer;
 }
 
-.icon {
-  font-size: 16px;
-}
-
-/* Overlay */
-.modal-overlay {
-  position: fixed;
-  inset: 0; /* top:0; right:0; bottom:0; left:0; */
-  background-color: rgba(0, 0, 0, 0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 50;
-  padding: 1rem; /* tạo khoảng cách khi màn hình nhỏ */
-}
-
+/* Overlay for modal */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -278,6 +273,7 @@ watchEffect(() => {
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  padding: 1rem; /* khoảng cách khi màn hình nhỏ */
 }
 
 .modal-box {
@@ -325,91 +321,37 @@ watchEffect(() => {
   background-color: #c53030;
 }
 
-
-/* === Modal === */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.modal-content {
-  background: white;
-  padding: 24px;
-  border-radius: 12px;
-  width: 320px;
-  max-width: 90%;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-}
-
-.modal-content h2 {
-  font-size: 18px;
-  margin-bottom: 12px;
-}
-
-.shortcut-list {
-  list-style: none;
-  padding: 0;
-  margin-bottom: 16px;
-}
-
-.shortcut-list li {
-  margin-bottom: 8px;
-  font-size: 14px;
-}
-
-.close-btn {
-  background-color: #e03a3c;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 24px;
-  cursor: pointer;
-}
-
-/* === Bottom Border === */
-.bottom-border {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  border-color: #e2e7ef;
-  margin: 0;
-}
-
-
-/* === DARK MODE === */
+/* === Dark Mode === */
 :global(.dark) {
-  background-color: #111;
-  color: #f1f1f1;
+  background-color: #111 !important;
+  color: #f1f1f1 !important;
 }
 
 :global(.dark .header) {
   background-color: #1a1a1a;
 }
 
-:global(.dark .nav-bar a) {
-  color: #f1f1f1;
-}
-
-:global(.dark .dropdown-menu) {
+:global(.dark .dropdown-menu),
+:global(.dark .dropdown-item) {
   background-color: #2b2b2b;
+  color: #f1f1f1;
 }
 
 :global(.dark .dropdown-item:hover) {
   background-color: #3a3a3a;
 }
 
-:global(.dark .search-box) {
-  border-color: #444;
-  background-color: #1e1e1e;
+:global(.dark .nav-bar a) {
+  color: #f1f1f1;
+}
+
+:global(.dark .nav-bar a:hover) {
+  color: #ff4b4d;
+}
+
+:global(.dark .modal-box) {
+  background-color: #2b2b2b;
+  color: white;
 }
 
 :global(.dark .login-btn) {
@@ -421,15 +363,10 @@ watchEffect(() => {
   background-color: #e03a3c;
 }
 
-:global(.dark .modal-content) {
-  background-color: #2b2b2b;
-  color: white;
-}
-
-/* === Responsive (mobile) giữ layout ngang === */
+/* === Mobile Responsive === */
 @media (max-width: 768px) {
   .header {
-    flex-wrap: nowrap; /* giữ header nằm ngang */
+    flex-wrap: nowrap;
     padding: 12px 16px;
     height: auto;
   }
@@ -443,38 +380,38 @@ watchEffect(() => {
     overflow-x: auto;
     white-space: nowrap;
   }
+  
   .nav-bar a {
     flex-shrink: 0;
   }
 
   .right-side {
-    display: none; /* ẩn nút search/login/join */
-  }
-
-  .mobile-menu {
-    position: absolute;
-    top: 72px;
-    left: 0;
-    right: 0;
-    background-color: white;
-    border-top: 1px solid #eee;
-    padding: 8px 16px;
-    z-index: 40;
-  }
-
-  .mobile-menu a {
-    display: block;
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 6px;
-    transition: background-color 0.2s;
+    display: none; /* ẩn nút search/login/join trên mobile */
   }
 
   .dropdown-menu {
     width: 180px;
-    right: auto;
     left: 0;
   }
+}
+
+/* Slide down transition for mobile menu */
+.slide-down-enter-active,
+.slide-down-leave-active {
+  transition: all 0.3s ease-out;
+  overflow: hidden;
+}
+
+.slide-down-enter-from,
+.slide-down-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.slide-down-enter-to,
+.slide-down-leave-from {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 
