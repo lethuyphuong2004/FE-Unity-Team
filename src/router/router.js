@@ -1,20 +1,29 @@
 import { createRouter, createWebHistory } from 'vue-router';
-
-import Home from '../views/home.vue';
-import Profile from '../views/profile.vue';
-import Auth from '../views/auth.vue';
+import ComEvent from '../views/Event.vue';
+import ComEventDetail from '../views/EventDetail.vue';
+import NotFound from '../views/404.vue';
 
 const routes = [
-    { path: '/', name: 'Home', component: Home },
-    { path: '/profile', name: 'Profile', component: Profile },
-    { path: '/auth', name: 'Auth', component: Auth },
+  {
+    path: '/',
+    name: 'EventList',
+    component: ComEvent,
+  },
+  {
+    path: '/event/:id',
+    name: 'EventDetail',
+    component: ComEventDetail,
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: NotFound,
+  },
 ];
 
-// Create router instance
 const router = createRouter({
-    history: createWebHistory(),
-    routes,
+  history: createWebHistory(),
+  routes,
 });
 
 export default router;
-  
