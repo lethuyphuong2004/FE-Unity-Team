@@ -34,7 +34,7 @@
       <router-link to="/Home" class="hover:text-red-600 transition-colors duration-200">Home</router-link>
       <router-link to="/" class="hover:text-red-600 transition-colors duration-200">Event</router-link>
       <router-link to="/about" class="hover:text-red-600 transition-colors duration-200">About</router-link>
-      <router-link to="/Challenges" class="hover:text-red-600 transition-colors duration-200">Challenges</router-link>
+      <router-link to="/challenges" class="hover:text-red-600 transition-colors duration-200">Challenges</router-link>
     </nav>
 
     <!-- Right: Search + Buttons -->
