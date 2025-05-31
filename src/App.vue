@@ -4,7 +4,7 @@
     <main>
       <!-- Thêm route tạm để test -->
       <router-view />
-      <div class="test-container" v-if="$route.path === '/test-event'">
+      <div class="test-container" v-if="$route.path === '/Challenges'">
         <h2>Test EventItem Component</h2>
         <div class="event-list">
           <EventItem
