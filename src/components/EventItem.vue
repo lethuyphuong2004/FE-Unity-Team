@@ -16,16 +16,33 @@
     }"
     @click="handleItemClick"
   >
-    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-3">
+    <!-- Nếu đã tham gia và hoàn thành thì chỉ hiện tích xanh -->
+    <div
+      v-if="status === 'done' && joined"
+      class="absolute top-2 right-2 bg-green-500 text-white rounded-full p-1 w-6 h-6 flex items-center justify-center shadow-md"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+        <path
+          fill-rule="evenodd"
+          d="M16.707 5.293a1 1 0 010 1.414l-8.25 8.25a1 1 0 01-1.414 0l-4.25-4.25a1 1 0 011.414-1.414L8 12.086l7.293-7.293a1 1 0 011.414 0z"
+          clip-rule="evenodd"
+        />
+      </svg>
+    </div>
+
+    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-2">
       <h3 class="text-gray-800 font-semibold text-base sm:text-lg leading-snug">{{ title }}</h3>
-      <div class="flex items-center text-sm">
-        <span v-if="status === 'done'" class="text-green-600 flex items-center">
-          <i class="icon-check mr-1"></i> Completed
-        </span>
+      <div class="flex items-center text-sm" v-if="!(status === 'done' && joined)">
+        <span v-if="status === 'done'" class="text-green-600 flex items-center"></span>
         <span v-else-if="dueDate" class="text-red-600 flex items-center">
           <i class="icon-clock mr-1"></i> Expired: {{ formattedDueDate }}
         </span>
       </div>
+    </div>
+
+    <!-- Địa điểm nếu có -->
+    <div v-if="location" class="text-sm text-gray-500 mb-2">
+      <i class="fas fa-map-marker-alt mr-1 text-gray-400"></i> {{ location }}
     </div>
 
     <div class="flex justify-between items-center text-sm sm:text-base">
@@ -36,12 +53,22 @@
       </div>
 
       <!-- Trạng thái tham gia -->
-      <div v-if="joined !== undefined">
+      <div v-if="joined !== undefined && !(status === 'done' && joined)">
         <span v-if="joined" class="text-green-600 flex items-center">
           <i class="fas fa-check mr-1 text-green-600"></i> Participated
         </span>
         <span v-else class="text-gray-400">Not Participated</span>
       </div>
+    </div>
+
+    <!-- Nút mua vé -->
+    <div v-if="ticketPurchased === false" class="mt-3 text-right">
+      <button
+        class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-4 py-1.5 rounded transition-all"
+        @click.stop="handleBuyTicket"
+      >
+        Mua vé
+      </button>
     </div>
   </div>
 </template>
@@ -69,6 +96,8 @@ export default {
       validator: value => ['pending', 'done'].includes(value)
     },
     joined: { type: Boolean, default: undefined },
+    ticketPurchased: { type: Boolean, default: undefined },
+    location: { type: String, default: '' },
     postId: { type: [String, Number], default: null },
     loading: { type: Boolean, default: false }
   },
@@ -96,7 +125,15 @@ export default {
       if (this.postId) {
         this.$router.push(`/post/${this.postId}/comment`)
       }
+    },
+    handleBuyTicket() {
+      alert('Test mua vé!');
+   
     }
   }
 }
 </script>
+
+<style scoped>
+
+</style>
