@@ -26,11 +26,16 @@
   <div v-else class="text-center p-8 text-gray-500 font-medium">
     Loading...
   </div>
+  <Event1Layout />
 </template>
 
 <script>
+import Event1Layout from '../components/Event1Layout.vue';
 export default {
   name: 'ComEvent',
+  components: {
+    Event1Layout
+  },
   data() {
     return {
       events: [],
