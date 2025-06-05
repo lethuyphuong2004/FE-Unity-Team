@@ -7,9 +7,9 @@
           <table class="min-w-[1000px] w-full border-collapse border border-gray-200 text-center">
             <thead class="sticky top-0 bg-gray-900 text-white z-10">
               <tr>
-                <th class="border border-gray-300 p-2 sm:p-3 w-auto sm:w-[7%] text-sm sm:text-base">Xếp hạng</th>
+                <th class="border border-gray-300 p-2 sm:p-3 w-auto sm:w-[7%] text-sm sm:text-base">Rank</th>
                 <th class="border border-gray-300 p-2 sm:p-3 w-auto sm:w-[10%] text-sm sm:text-base">Avatar</th>
-                <th class="border border-gray-300 p-2 sm:p-3 w-auto sm:w-[38%] text-sm sm:text-base">Tên</th>
+                <th class="border border-gray-300 p-2 sm:p-3 w-auto sm:w-[38%] text-sm sm:text-base">Name</th>
                 <th class="border border-gray-300 p-2 sm:p-3 w-auto sm:w-[25%] text-sm sm:text-base">Level</th>
                 <th class="border border-gray-300 p-2 sm:p-3 w-auto sm:w-[25%] text-sm sm:text-base">Points</th>
               </tr>
@@ -83,7 +83,7 @@
                       Level {{ user.level }}
                     </div>
                     <div class="text-xs sm:text-sm text-gray-600 mt-1">
-                      Cần {{ calculateNextLevelPoints(user.level) }} pts để lên Level {{ user.level + 1 }}
+                      Need {{ calculateNextLevelPoints(user.level) }} pts to level up {{ user.level + 1 }}
                     </div>
                     <div class="w-full bg-gray-200 rounded-full h-1.5 mt-1">
                       <div
