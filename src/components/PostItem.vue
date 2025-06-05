@@ -199,7 +199,7 @@ export default {
     },
     handleAction() {
       if (this.post.requiresComment && !this.post.commented) {
-        this.$router.push(`/comment/${this.post.id}`);
+        this.$router.push(`/post/${this.post.id}/comment`);
       } else if (this.post.status === 'done') {
         this.$router.push(`/post/${this.post.id}/detail`);
       } else if (!this.post.joined) {
