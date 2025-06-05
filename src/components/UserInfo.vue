@@ -12,7 +12,7 @@
     v-else-if="loading"
     class="max-w-full sm:max-w-md mx-auto mt-6 p-4 sm:p-6 bg-white border border-gray-200 rounded-xl text-center shadow"
   >
-    <p class="text-gray-500 animate-pulse text-sm sm:text-base">Đang tải thông tin người dùng...</p>
+    <p class="text-gray-500 animate-pulse text-sm sm:text-base">Loading user info...</p>
   </div>
 
   <!-- Nội dung chính -->
@@ -38,7 +38,7 @@
       <p
         class="inline-block px-4 py-2 sm:px-5 sm:py-2.5 lg:px-6 lg:py-3 text-xs sm:text-sm font-semibold text-green-800 bg-green-100 rounded-full shadow-sm"
       >
-        🧑‍💼 Vai trò: {{ user.role }}
+        🧑‍💼 Role: {{ user.role }}
       </p>
     </div>
 
@@ -51,11 +51,11 @@
     <!-- Location & Ngày tham gia -->
     <div class="text-sm sm:text-base text-gray-500 space-y-1">
       <p>
-        <span class="font-medium text-gray-700">🌍 Địa điểm:</span>
+        <span class="font-medium text-gray-700">🌍 Location:</span>
         {{ user.location || 'Không rõ' }}
       </p>
       <p>
-        <span class="font-medium text-gray-700">🕒 Tham gia:</span>
+        <span class="font-medium text-gray-700">🕒 Joined:</span>
         {{ formatDate(user.createdAt) }}
       </p>
     </div>
@@ -106,9 +106,9 @@ export default {
       this.user = data[0];
       this.loading = false;
     } catch (err) {
-      this.error = `Không thể tải thông tin người dùng: ${err.message}`;
+      this.error = `Failed to load user data: ${err.message}`;
       this.loading = false;
-      console.error('Lỗi:', err);
+      console.error('Error:', err);
     }
   }
 };
