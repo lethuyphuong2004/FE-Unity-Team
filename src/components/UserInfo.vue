@@ -33,12 +33,12 @@
       </div>
     </div>
 
-    <!-- Vai trò -->
+    <!-- Level -->
     <div>
       <p
         class="inline-block px-4 py-2 sm:px-5 sm:py-2.5 lg:px-6 lg:py-3 text-xs sm:text-sm font-semibold text-green-800 bg-green-100 rounded-full shadow-sm"
       >
-        🧑‍💼 Vai trò: {{ user.role }}
+         Level: {{ user.level }}
       </p>
     </div>
 
@@ -74,7 +74,7 @@ export default {
         createdAt: '',
         location: '',
         headline: 'No headline available',
-        role: 'Member'
+        level: 'Member'
       },
       loading: true,
       error: null
@@ -82,6 +82,7 @@ export default {
   },
   methods: {
     formatDate(dateString) {
+      if(!dateString) return 'Không rõ';
       return new Date(dateString).toLocaleDateString('vi-VN', {
         year: 'numeric',
         month: 'long',
@@ -93,24 +94,60 @@ export default {
     }
   },
   async created() {
+    const userID = this.$route.params.id;
     try {
-      const response = await fetch('/about.json');
-      console.log('Response status:', response.status);
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+      const response = await fetch(`https://virtserver.swaggerhub.com/404-aaa/API_USER/1.0.0/${userID}`);
+      if(!response.ok){
+        throw new Error(`HTTP error! Status : ${response.status}`);
       }
-      const text = await response.text();
-      console.log('Response text:', text);
-      const data = JSON.parse(text);
-      console.log('Parsed data:', data);
-      this.user = data[0];
+      const result = await response.json();
+
+      // nếu response rỗng hoặc không có dữ liệu cần
+      if(!result || !result.data){
+        throw new Error('Dữ liệu người dùng trống hoặc không hợp lệ');
+      }
+      
+      const data = result.data;
+
+      this.user = {
+        memberID: data.community_member_id || '',
+        name: `${data.first_name || ''} ${data.last_name || ''}`.trim() || 'Unknown',
+        avtURL: data.avatar_url && data.avatar_url !== 'string' ? data.avatar_url: 'https://i.pinimg.com/736x/f7/cf/ff/f7cfff1b6a2188e086c497c832b909cb.jpg' ,
+        createdAt: data.created_at || '',
+        location: data.location || 'Chưa cập nhật',
+        headline: data.description || 'Headline không có sẵn',
+        level: data.current_level_name || 'Chưa cập nhật'
+      }
+
+     
       this.loading = false;
-    } catch (err) {
-      this.error = `Không thể tải thông tin người dùng: ${err.message}`;
+
+    } catch (error) {
+      this.error = `Không thể tải thông tin người dùng: ${error.message}`;
       this.loading = false;
-      console.error('Lỗi:', err);
+      console.error('Lỗi khi fetch user: ', error);
     }
   }
+
+  // async created() {
+  //   try {
+  //     const response = await fetch('/about.json');
+  //     console.log('Response status:', response.status);
+  //     if (!response.ok) {
+  //       throw new Error(`HTTP error! Status: ${response.status}`);
+  //     }
+  //     const text = await response.text();
+  //     console.log('Response text:', text);
+  //     const data = JSON.parse(text);
+  //     console.log('Parsed data:', data);
+  //     this.user = data[0];
+  //     this.loading = false;
+  //   } catch (err) {
+  //     this.error = `Không thể tải thông tin người dùng: ${err.message}`;
+  //     this.loading = false;
+  //     console.error('Lỗi:', err);
+  //   }
+  // }
 };
 </script>
 
