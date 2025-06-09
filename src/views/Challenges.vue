@@ -56,22 +56,23 @@
         :joined="false"
         :ticketPurchased="false"
         location="Ho Chi Minh City Youth Cultural House"
-        :postId="1"
+        :postId="4"
       />
 
       <EventItem
-        title="Event ..."
-        :reward="{ type: 'voucher' }"
-        status="done"
-        :joined="true"
-        :postId="2"
+        title="Vietnam Sport Show 2025"
+        :reward="{ type: 'points', value: 200 }"
+        dueDate="2025-06-30T23:59:59"
+        :ticketPurchased="false"
+        :joined="false"
+        :postId="5"
       />
       <EventItem
-        title="Event...."
+        title="GrowthVerse Summit 2025"
         :reward="{ type: 'voucher' }"
         status="done"
         :joined="true"
-        :postId="3"
+        :postId="6"
       />
 
       <EventItem
