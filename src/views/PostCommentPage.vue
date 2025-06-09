@@ -94,9 +94,10 @@ export default {
       newComment: '',
       // Mock data
       mockPosts: {
+        // Post data
         1: {
           id: 1,
-          title: "June Event - Post weekly",
+          title: "Tran Nguyen Gia Huy 221403 find a lover for rest of life",
           reward: { type: 'points', value: 100 },
           dueDate: '2024-06-30T23:59:59',
           status: 'pending',
@@ -104,8 +105,42 @@ export default {
         },
         2: {
           id: 2,
-          title: "Positive comment challenge",
-          reward: { type: 'voucher' },
+          title: "Thien An writes an open letter to Jack and their daughter Sol.",
+          reward: { type: 'points', value: 50 },
+          dueDate: '2024-06-15T18:00:00',
+          status: 'done',
+          joined: false
+        },
+        3: {
+          id: 2,
+          title: "Ronaldo nets his 937th career goal.",
+          reward: { type: 'points', value: 50 },
+          dueDate: '2024-06-15T18:00:00',
+          status: 'done',
+          joined: false
+        },
+
+        // event data
+        4: {
+          id: 2,
+          title: "Event at Ho Chi Minh City",
+          reward: { type: 'voucher'},
+          dueDate: '2024-06-15T18:00:00',
+          status: 'done',
+          joined: false
+        },
+        5: {
+          id: 2,
+          title: "Vietnam Sport Show 2025",
+          reward: { type: 'voucher'},
+          dueDate: '2024-06-15T18:00:00',
+          status: 'done',
+          joined: false
+        },
+        6: {
+          id: 2,
+          title: "GrowthVerse Summit 2025",
+          reward: { type: 'voucher'},
           dueDate: '2024-06-15T18:00:00',
           status: 'done',
           joined: false
