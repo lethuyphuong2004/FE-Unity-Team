@@ -31,7 +31,6 @@
 
     <!-- Center: Navigation -->
     <nav class="hidden md:flex gap-6 font-semibold text-gray-800 dark:text-gray-100 text-base">
-      <router-link to="/Home" class="hover:text-red-600 transition-colors duration-200">Home</router-link>
       <router-link to="/" class="hover:text-red-600 transition-colors duration-200">Event</router-link>
       <router-link to="/about" class="hover:text-red-600 transition-colors duration-200">About</router-link>
       <router-link to="/challenges" class="hover:text-red-600 transition-colors duration-200">Challenges</router-link>
@@ -39,9 +38,6 @@
 
     <!-- Right: Search + Buttons -->
     <div class="hidden md:flex items-center gap-3">
-      <div class="px-3 py-1 border rounded-full text-sm text-gray-600 dark:text-gray-200 dark:border-gray-600">
-        🔍 Search
-      </div>
       <button
         class="px-4 py-1 border rounded-full text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700 transition">
         Log in
