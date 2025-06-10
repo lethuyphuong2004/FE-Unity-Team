@@ -1,52 +1,43 @@
 <template>
-  <header
-    class="sticky top-0 z-50 flex justify-between items-center px-6 h-18 bg-white shadow-sm dark:bg-gray-700 font-sans">
-    <!-- LEFT: Logo + Dropdown -->
-    <div class="flex items-center gap-1">
-      <div class="relative flex flex-col">
-        <div class="flex items-center gap-1 cursor-pointer select-none" @click="toggleDropdown">
-          <router-link to="/" class="block">
-            <img src="../assets/VIA/VN2.png" alt="VN Logo" class="h-14 w-auto" />
-          </router-link>
-          <font-awesome-icon :icon="isDropdownOpen ? 'chevron-up' : 'chevron-down'"
-            class="text-gray-600 dark:text-gray-300 text-sm" />
-        </div>
+  <header class="sticky top-0 z-50 flex items-center px-6 h-18 bg-white shadow-sm dark:bg-gray-700 font-sans">
+  <!-- LEFT: Logo + Dropdown -->
+  <div class="flex-1 flex items-center gap-1">
+    <div class="relative flex flex-col">
+      <div class="flex items-center gap-1 cursor-pointer select-none" @click="toggleDropdown">
+        <router-link to="/" class="block">
+          <img src="../assets/VIA/VN2.png" alt="VN Logo" class="h-14 w-auto" />
+        </router-link>
+        <font-awesome-icon :icon="isDropdownOpen ? 'chevron-up' : 'chevron-down'"
+          class="text-gray-600 dark:text-gray-300 text-sm" />
+      </div>
 
-        <!-- Dropdown Menu -->
-        <div v-if="isDropdownOpen"
-          class="absolute left-0 top-full mt-1 min-w-full bg-white dark:bg-gray-800 shadow-lg rounded-md z-50">
-          <div @click.stop="openShortcutsModal"
-            class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer text-gray-800 dark:text-gray-300">
-            ⌨️ Keyboard Shortcuts
-          </div>
-          <div @click.stop="toggleDarkMode"
-            class="px-4 py-2 flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer text-gray-800 dark:text-gray-300">
-            <font-awesome-icon :icon="isDarkMode ? 'sun' : 'moon'" class="text-gray-600 dark:text-gray-300" />
-            Switch to {{ isDarkMode ? 'Light' : 'Dark' }} Mode
-          </div>
+      <!-- Dropdown Menu -->
+      <div v-if="isDropdownOpen"
+        class="absolute left-0 top-full mt-1 min-w-full bg-white dark:bg-gray-800 shadow-lg rounded-md z-50">
+        <div @click.stop="openShortcutsModal"
+          class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer text-gray-800 dark:text-gray-300">
+          ⌨️ Keyboard Shortcuts
         </div>
-
+        <div @click.stop="toggleDarkMode"
+          class="px-4 py-2 flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer text-gray-800 dark:text-gray-300">
+          <font-awesome-icon :icon="isDarkMode ? 'sun' : 'moon'" class="text-gray-600 dark:text-gray-300" />
+          Switch to {{ isDarkMode ? 'Light' : 'Dark' }} Mode
+        </div>
       </div>
     </div>
+  </div>
 
-    <!-- Center: Navigation -->
-    <nav class="hidden md:flex gap-6 font-semibold text-gray-800 dark:text-gray-100 text-base">
+  <!-- CENTER: Navigation -->
+  <div class="hidden md:flex flex-1 justify-center">
+    <nav class="flex gap-6 font-semibold text-gray-800 dark:text-gray-100 text-base">
       <router-link to="/" class="hover:text-red-600 transition-colors duration-200">Event</router-link>
       <router-link to="/about" class="hover:text-red-600 transition-colors duration-200">About</router-link>
       <router-link to="/challenges" class="hover:text-red-600 transition-colors duration-200">Challenges</router-link>
     </nav>
+  </div>
 
-    <!-- Right: Search + Buttons -->
-    <div class="hidden md:flex items-center gap-3">
-      <button
-        class="px-4 py-1 border rounded-full text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700 transition">
-        Log in
-      </button>
-      <button class="px-4 py-1 bg-red-600 text-white rounded-full text-sm font-medium hover:bg-red-700 transition">
-        Join
-      </button>
-    </div>
-
+  <!-- RIGHT: Hamburger / Buttons -->
+  <div class="flex-1 flex justify-end items-center gap-3">
     <!-- Hamburger (Mobile) -->
     <button @click="toggleMobileMenu" class="md:hidden text-gray-800 dark:text-gray-200" aria-label="Toggle menu">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -55,38 +46,44 @@
         <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
       </svg>
     </button>
+  </div>
 
-    <!-- Mobile Menu -->
-    <div v-if="showMobileMenu"
-      class="md:hidden flex flex-wrap justify-center gap-3 mt-2 text-sm font-semibold text-gray-800 dark:text-gray-100">
-      <button class="px-3 py-1 border rounded-full hover:text-red-600 transition">
-        Log in
-      </button>
-      <button class="px-3 py-1 bg-red-600 text-white rounded-full hover:bg-red-700 transition">
-        Join
+ <!-- Mobile Menu -->
+<div v-if="showMobileMenu"
+  class="md:hidden flex flex-col items-center gap-3 mt-2 text-base font-semibold text-gray-800 dark:text-gray-100">
+  <router-link to="/challenges" class="px-4 py-2 hover:text-red-600 transition">
+    Event 
+  </router-link>
+  <router-link to="/about" class="px-4 py-2 hover:text-red-600 transition">
+    About
+  </router-link>
+  <router-link to="/" class="px-4 py-2 hover:text-red-600 transition">
+    Challenges
+  </router-link>  
+</div>
+
+
+  <!-- Modal Shortcuts -->
+  <div v-if="showShortcutsModal"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+    @click.self="closeShortcutsModal">
+    <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full shadow-lg">
+      <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+        ⌨️ Keyboard Shortcuts
+      </h2>
+      <ul class="max-h-80 overflow-y-auto list-none p-0 mb-4 text-gray-700 dark:text-gray-300">
+        <li v-for="item in shortcuts" :key="item.id" class="mb-2 text-base">
+          <strong>{{ item.shortcut }}</strong>: {{ item.action }}
+        </li>
+      </ul>
+      <button @click="closeShortcutsModal"
+        class="ml-auto block bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-md transition">
+        Close
       </button>
     </div>
+  </div>
+</header>
 
-    <!-- Modal Shortcuts -->
-    <div v-if="showShortcutsModal"
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
-      @click.self="closeShortcutsModal">
-      <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full shadow-lg">
-        <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
-          ⌨️ Keyboard Shortcuts
-        </h2>
-        <ul class="max-h-80 overflow-y-auto list-none p-0 mb-4 text-gray-700 dark:text-gray-300">
-          <li v-for="item in shortcuts" :key="item.id" class="mb-2 text-base">
-            <strong>{{ item.shortcut }}</strong>: {{ item.action }}
-          </li>
-        </ul>
-        <button @click="closeShortcutsModal"
-          class="ml-auto block bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-md transition">
-          Close
-        </button>
-      </div>
-    </div>
-  </header>
 </template>
 
 <script setup>
