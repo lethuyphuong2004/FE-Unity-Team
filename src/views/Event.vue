@@ -1,19 +1,20 @@
 <template>
-  <div class="min-h-screen bg-gray-50 py-8 font-sans">
+  <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8 font-sans text-gray-800 dark:text-gray-100">
     <div class="container mx-auto px-4 max-w-5xl">
-      <h2 class="text-3xl font-bold text-gray-800 mb-8">Upcoming Events</h2>
+      <h2 class="text-3xl font-bold mb-8">Upcoming Events</h2>
 
-      <div v-if="error" class="text-red-600 bg-red-100 p-4 rounded-lg">
+      <div v-if="error" class="text-red-600 bg-red-100 dark:bg-red-900 dark:text-red-300 p-4 rounded-lg">
         {{ error }}
       </div>
 
-      <div v-else-if="loading" class="text-gray-600 text-center py-4">
+      <div v-else-if="loading" class="text-gray-600 dark:text-gray-300 text-center py-4">
         Đang tải danh sách sự kiện...
       </div>
 
       <div v-else class="flex flex-col gap-8">
         <div v-for="event in events" :key="event.id"
-          class="border border-gray-300 rounded-xl p-6 cursor-pointer hover:shadow-lg transition-shadow duration-200 bg-white rounded-lg shadow-md p-6">
+          class="border border-gray-300 dark:border-gray-700 rounded-xl p-6 cursor-pointer hover:shadow-lg transition-shadow duration-200 bg-white dark:bg-gray-800 shadow-md">
+
           <!-- CARD HIỆN TẠI -->
           <img :src="event.cover_image_url" alt="Event Banner"
             class="w-full max-h-[400px] object-cover rounded-xl mb-4" @click.stop="goToDetail(event.id)" />
@@ -35,16 +36,21 @@
 
           <!-- COMPONENT CŨ CHÈN DƯỚI -->
           <div class="mt-8">
-            <Event1Card :id="event.id" :day="getDay(event.starts_at)" :month="getMonth(event.starts_at)"
-              :title="event.name" :time="formatDateRange(event.starts_at, event.ends_at)" :price="event.price"
-              :location="event.in_persion_location" :address="event.address" :mapUrl="event.location_URL"
-              :mapImage="event.cover_image_url" :organizer="event.host" :description="event.description"
-              :maxParticipants="event.max_attendees" :currentParticipants="event.current_attendees"
+            <Event1Card 
+              :id="event.id" 
+              :day="getDay(event.starts_at)" 
+              :month="getMonth(event.starts_at)"
+              :title="event.name" 
+              :time="formatDateRange(event.starts_at, event.ends_at)" 
+              :price="event.price"
+              :location="event.in_persion_location" 
+              :address="event.address" 
+              :mapUrl="event.location_URL"
+              :mapImage="event.cover_image_url" 
+              :organizer="event.host" :description="event.description"
+              :maxParticipants="event.max_attendees" 
+              :currentParticipants="event.current_attendees"
               :status="event.status === 'upcoming' ? 'open' : 'closed'" />
-            <Event1Layout>
-              <Event1List :events="[event]" />
-            </Event1Layout>
-
           </div>
         </div>
       </div>
