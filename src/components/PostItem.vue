@@ -25,6 +25,7 @@
 
       <!-- Nội dung -->
       <div class="p-6 flex-grow flex flex-col">
+
         <!-- Tiêu đề với gradient text -->
         <h3 class="title text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-indigo-600 transition-colors bg-clip-text bg-gradient-to-r from-gray-800 to-gray-900">
           {{ post.title }}
@@ -101,7 +102,11 @@
 </template>
 
 <script>
+
+
 export default {
+
+  
   name: 'PostItem',
   props: {
     post: {

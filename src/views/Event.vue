@@ -23,8 +23,8 @@
               class="w-full max-h-[300px] object-cover rounded-xl mb-4 cursor-pointer" @click="goToDetail(event.id)" />
 
             <h2 class="text-2xl font-bold mb-2 text-indigo-700 dark:text-indigo-300 cursor-pointer"
-              @click="goToDetail(event.id)">
-              {{ event.name }}
+              @click="goToDetail(event.event_id)">
+              {{ event.ten_events }}
             </h2>
 
             <p class="text-gray-600 dark:text-gray-300 mb-4 line-clamp-4 cursor-pointer" @click="goToDetail(event.id)">

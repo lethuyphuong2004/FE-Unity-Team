@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router';
 import ComEvent from '../views/Event.vue';
 import ComEventDetail from '../views/EventDetail.vue';
 import NotFound from '../views/404.vue';
-import PostComment from '../views/PostCommentPage.vue'
 import Challenges from '../views/Challenges.vue';
 import AboutPage from '../views/About.vue';
 
@@ -33,17 +32,11 @@ const routes = [
     component: Challenges,
   },
   {
-    path: '/post/:postId/comment',
-    name: 'PostComment',
-    component: PostComment,
-    props: true
-  },
-      {
-      path: '/about',
-      name: 'about',
-      component: AboutPage,
+    path: '/about',
+    name: 'about',
+    component: AboutPage,
 
-    },
+  },
 
   // {
   //   path: '/posts',
