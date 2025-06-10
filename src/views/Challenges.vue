@@ -13,6 +13,8 @@
             createdAt: new Date().toISOString(),
             excerpt: 'Post excerpt goes here...',
             joined: true,
+            requiresComment: true,
+            commented: false,
             tags: ['commenting', 'engagement']
           }"
         />
@@ -25,6 +27,22 @@
             createdAt: new Date().toISOString(),
             excerpt: 'Post excerpt goes here...',
             joined: false,
+            requiresComment: false,
+            commented: false,
+            tags: ['commenting', 'engagement']
+          }"
+        />
+        <PostItem 
+          :post="{   
+            id: 3,
+            title: 'Leave meaningful comments ... to earn points and level up',
+            author: 'Community Team',
+            reward: { type: 'points', value: 50 },
+            createdAt: new Date().toISOString(),
+            excerpt: 'Post excerpt goes here...',
+            joined: true,
+            requiresComment: true,
+            commented: true,
             tags: ['commenting', 'engagement']
           }"
         />
@@ -32,19 +50,28 @@
     <h3 class="text-xl font-bold mb-4">Join exciting events to gain experience</h3>
     <div class="event-list space-y-4">
       <EventItem
-        title="June Challenge – Post Every Week"
+        title="Sự kiện ở TP.HCM"
         :reward="{ type: 'points', value: 100 }"
         dueDate="2024-06-30T23:59:59"
-        :joined="true"
+        :joined="false"
+        :ticketPurchased="false"
+        location="Nhà văn hoá Thanh Niên"
         :postId="1"
       />
 
       <EventItem
-        title="Positive Comment Challenge"
+        title="Event ..."
         :reward="{ type: 'voucher' }"
         status="done"
-        :joined="false"
+        :joined="true"
         :postId="2"
+      />
+      <EventItem
+        title="Event...."
+        :reward="{ type: 'voucher' }"
+        status="done"
+        :joined="true"
+        :postId="3"
       />
 
       <EventItem
