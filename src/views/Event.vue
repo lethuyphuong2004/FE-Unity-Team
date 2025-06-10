@@ -1,56 +1,75 @@
 <template>
   <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8 font-sans text-gray-800 dark:text-gray-100">
-    <div class="container mx-auto px-4 max-w-5xl">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
       <h2 class="text-3xl font-bold mb-8">Upcoming Events</h2>
 
+      <!-- Error -->
       <div v-if="error" class="text-red-600 bg-red-100 dark:bg-red-900 dark:text-red-300 p-4 rounded-lg">
         {{ error }}
       </div>
 
+      <!-- Loading -->
       <div v-else-if="loading" class="text-gray-600 dark:text-gray-300 text-center py-4">
         Đang tải danh sách sự kiện...
       </div>
 
-      <div v-else class="flex flex-col gap-8">
-        <div v-for="event in events" :key="event.id"
-          class="border border-gray-300 dark:border-gray-700 rounded-xl p-6 cursor-pointer hover:shadow-lg transition-shadow duration-200 bg-white dark:bg-gray-800 shadow-md">
+      <!-- Event list -->
+      <div v-else class="flex flex-col gap-10">
+        <div
+          v-for="event in events"
+          :key="event.id"
+          class="border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 shadow-md transition-shadow duration-200 hover:shadow-lg"
+        >
+          <!-- Event Preview -->
+          <div class="p-4 sm:p-6">
+            <img
+              :src="event.cover_image_url"
+              alt="Event Banner"
+              class="w-full max-h-[300px] object-cover rounded-xl mb-4 cursor-pointer"
+              @click="goToDetail(event.id)"
+            />
 
-          <!-- CARD HIỆN TẠI -->
-          <img :src="event.cover_image_url" alt="Event Banner"
-            class="w-full max-h-[400px] object-cover rounded-xl mb-4" @click.stop="goToDetail(event.id)" />
+            <h2
+              class="text-2xl font-bold mb-2 text-indigo-700 dark:text-indigo-300 cursor-pointer"
+              @click="goToDetail(event.id)"
+            >
+              {{ event.name }}
+            </h2>
 
-          <h2 class="text-2xl font-bold mb-4 text-left text-indigo-700 dark:text-indigo-300 cursor-pointer"
-            @click.stop="goToDetail(event.id)">
-            {{ event.name }}
-          </h2>
+            <p
+              class="text-gray-600 dark:text-gray-300 mb-4 line-clamp-4 cursor-pointer"
+              @click="goToDetail(event.id)"
+            >
+              {{ event.description }}
+            </p>
 
-          <p class="text-gray-600 dark:text-gray-300 text-left mb-4 line-clamp-4 cursor-pointer"
-            @click.stop="goToDetail(event.id)">
-            {{ event.description }}
-          </p>
+            <span
+              class="text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer"
+              @click="goToDetail(event.id)"
+            >
+              More Details
+            </span>
+          </div>
 
-          <span @click.stop="goToDetail(event.id)"
-            class="text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer">
-            More Details
-          </span>
-
-          <!-- COMPONENT CŨ CHÈN DƯỚI -->
-          <div class="mt-8">
-            <Event1Card 
-              :id="event.id" 
-              :day="getDay(event.starts_at)" 
+          <!-- Chi tiết thêm từ Event1Card -->
+          <div class="bg-gray-50 dark:bg-gray-900 p-4 sm:p-6 rounded-b-xl">
+            <Event1Card
+              :id="event.id"
+              :day="getDay(event.starts_at)"
               :month="getMonth(event.starts_at)"
-              :title="event.name" 
-              :time="formatDateRange(event.starts_at, event.ends_at)" 
+              :title="event.name"
+              :time="formatDateRange(event.starts_at, event.ends_at)"
               :price="event.price"
-              :location="event.in_persion_location" 
-              :address="event.address" 
+              :location="event.in_persion_location"
+              :address="event.address"
               :mapUrl="event.location_URL"
-              :mapImage="event.cover_image_url" 
-              :organizer="event.host" :description="event.description"
-              :maxParticipants="event.max_attendees" 
+              :mapImage="event.cover_image_url"
+              :organizer="event.host"
+              :description="event.description"
+              :maxParticipants="event.max_attendees"
               :currentParticipants="event.current_attendees"
-              :status="event.status === 'upcoming' ? 'open' : 'closed'" />
+              :status="event.status === 'upcoming' ? 'open' : 'closed'"
+            />
           </div>
         </div>
       </div>
@@ -58,17 +77,17 @@
   </div>
 </template>
 
+
 <script>
 import Event1Card from '../components/Event1Card.vue';
 import Event1List from '../components/Event1List.vue';
-import Event1Layout from '../components/Event1Layout.vue';
+
 
 export default {
   name: 'ComEvent',
   components: {
     Event1Card,
     Event1List,
-    Event1Layout,
   },
   data() {
     return {
