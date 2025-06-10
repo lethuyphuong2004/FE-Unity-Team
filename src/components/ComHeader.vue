@@ -3,7 +3,7 @@
     class="sticky top-0 z-50 flex justify-between items-center px-6 h-18 bg-white shadow-sm dark:bg-gray-700 font-sans">
     <!-- LEFT: Logo + Dropdown -->
     <div class="flex items-center gap-1">
-      <div class="relative flex flex-col">
+      <div class="relative flex flex-col" @click.self="isDropdownOpen = false">
         <div class="flex items-center gap-1 cursor-pointer select-none" @click="toggleDropdown">
           <router-link to="/" class="block">
             <img src="../assets/VIA/VN2.png" alt="VN Logo" class="h-14 w-auto" />
@@ -25,7 +25,6 @@
             Switch to {{ isDarkMode ? 'Light' : 'Dark' }} Mode
           </div>
         </div>
-
       </div>
     </div>
 
@@ -56,42 +55,59 @@
         <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
       </svg>
     </button>
+  </header>
 
-    <!-- Mobile Menu -->
+  <!-- Mobile Menu -->
+  <!-- Sidebar Menu with Slide Animation -->
+  <transition name="slide">
     <div v-if="showMobileMenu"
-      class="md:hidden flex flex-wrap justify-center gap-3 mt-2 text-sm font-semibold text-gray-800 dark:text-gray-100">
-      <button class="px-3 py-1 border rounded-full hover:text-red-600 transition">
-        Log in
+      class="fixed top-0 right-0 h-full w-64 bg-white dark:bg-gray-800 shadow-lg flex flex-col items-center gap-4 py-6 z-50 md:hidden">
+      <button class="absolute top-3 right-3 text-gray-600 dark:text-gray-300 hover:text-red-600 text-xl"
+        @click="toggleMobileMenu" aria-label="Close sidebar">
+        &times;
       </button>
-      <button class="px-3 py-1 bg-red-600 text-white rounded-full hover:bg-red-700 transition">
-        Join
-      </button>
-    </div>
-
-    <!-- Modal Shortcuts -->
-    <div v-if="showShortcutsModal"
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
-      @click.self="closeShortcutsModal">
-      <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full shadow-lg">
-        <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
-          ⌨️ Keyboard Shortcuts
-        </h2>
-        <ul class="max-h-80 overflow-y-auto list-none p-0 mb-4 text-gray-700 dark:text-gray-300">
-          <li v-for="item in shortcuts" :key="item.id" class="mb-2 text-base">
-            <strong>{{ item.shortcut }}</strong>: {{ item.action }}
-          </li>
-        </ul>
-        <button @click="closeShortcutsModal"
-          class="ml-auto block bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-md transition">
-          Close
+      <router-link to="/Home" class="text-base font-semibold hover:text-red-600"
+        @click="toggleMobileMenu">Home</router-link>
+      <router-link to="/" class="text-base font-semibold hover:text-red-600"
+        @click="toggleMobileMenu">Event</router-link>
+      <router-link to="/about" class="text-base font-semibold hover:text-red-600"
+        @click="toggleMobileMenu">About</router-link>
+      <router-link to="/challenges" class="text-base font-semibold hover:text-red-600"
+        @click="toggleMobileMenu">Challenges</router-link>
+      <div class="flex gap-3 mt-4">
+        <button
+          class="px-4 py-1 border rounded-full text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+          Log in
+        </button>
+        <button class="px-4 py-1 bg-red-600 text-white rounded-full text-sm font-medium hover:bg-red-700 transition">
+          Join
         </button>
       </div>
     </div>
-  </header>
+  </transition>
+
+
+  <!-- Modal Shortcuts -->
+  <div v-if="showShortcutsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+    @click.self="closeShortcutsModal">
+    <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full shadow-lg">
+      <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+        ⌨️ Keyboard Shortcuts
+      </h2>
+      <ul class="max-h-80 overflow-y-auto list-none p-0 mb-4 text-gray-700 dark:text-gray-300">
+        <li v-for="item in shortcuts" :key="item.id" class="mb-2 text-base">
+          <strong>{{ item.shortcut }}</strong>: {{ item.action }}
+        </li>
+      </ul>
+      <button @click="closeShortcutsModal"
+        class="ml-auto block bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-md transition">
+        Close
+      </button>
+    </div>
+  </div>
 </template>
 
 <script setup>
-// giữ nguyên phần logic, import fontawesome và reactive refs như bạn đã làm
 import { ref, onMounted, watchEffect } from 'vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -122,9 +138,7 @@ const toggleDarkMode = () => {
 
 onMounted(async () => {
   try {
-    const res = await fetch(
-      'https://67345ca9a042ab85d119d8eb.mockapi.io/shortcuts'
-    )
+    const res = await fetch('https://67345ca9a042ab85d119d8eb.mockapi.io/shortcuts')
     if (!res.ok) throw new Error('Fetch failed with status ' + res.status)
     const data = await res.json()
     shortcuts.value = data
@@ -151,3 +165,29 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.slide-enter-from {
+  transform: translateX(100%);
+}
+
+.slide-enter-active {
+  transition: transform 0.3s ease-out;
+}
+
+.slide-enter-to {
+  transform: translateX(0%);
+}
+
+.slide-leave-from {
+  transform: translateX(0%);
+}
+
+.slide-leave-active {
+  transition: transform 0.3s ease-in;
+}
+
+.slide-leave-to {
+  transform: translateX(100%);
+}
+</style>
