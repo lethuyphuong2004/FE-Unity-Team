@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white p-4 rounded-lg shadow-md">
+  <div class="bg-white">
     <EventCard
       v-for="event in events"
       :key="event.id"

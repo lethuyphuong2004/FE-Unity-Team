@@ -15,61 +15,36 @@
 
       <!-- Event list -->
       <div v-else class="flex flex-col gap-10">
-        <div
-          v-for="event in events"
-          :key="event.id"
-          class="border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 shadow-md transition-shadow duration-200 hover:shadow-lg"
-        >
+        <div v-for="event in events" :key="event.id"
+          class="bg-white dark:bg-gray-800 shadow-md rounded-xl transition-shadow duration-200 hover:shadow-lg p-4 sm:p-6 space-y-6">
           <!-- Event Preview -->
           <div class="p-4 sm:p-6">
-            <img
-              :src="event.cover_image_url"
-              alt="Event Banner"
-              class="w-full max-h-[300px] object-cover rounded-xl mb-4 cursor-pointer"
-              @click="goToDetail(event.id)"
-            />
+            <img :src="event.cover_image_url" alt="Event Banner"
+              class="w-full max-h-[300px] object-cover rounded-xl mb-4 cursor-pointer" @click="goToDetail(event.id)" />
 
-            <h2
-              class="text-2xl font-bold mb-2 text-indigo-700 dark:text-indigo-300 cursor-pointer"
-              @click="goToDetail(event.id)"
-            >
+            <h2 class="text-2xl font-bold mb-2 text-indigo-700 dark:text-indigo-300 cursor-pointer"
+              @click="goToDetail(event.id)">
               {{ event.name }}
             </h2>
 
-            <p
-              class="text-gray-600 dark:text-gray-300 mb-4 line-clamp-4 cursor-pointer"
-              @click="goToDetail(event.id)"
-            >
+            <p class="text-gray-600 dark:text-gray-300 mb-4 line-clamp-4 cursor-pointer" @click="goToDetail(event.id)">
               {{ event.description }}
             </p>
 
-            <span
-              class="text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer"
-              @click="goToDetail(event.id)"
-            >
+            <span class="text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer"
+              @click="goToDetail(event.id)">
               More Details
             </span>
           </div>
-
+          <hr class="border-t border-gray-300 dark:border-gray-600 my-4" />
           <!-- Chi tiết thêm từ Event1Card -->
-          <div class="bg-gray-50 dark:bg-gray-900 p-4 sm:p-6 rounded-b-xl">
-            <Event1Card
-              :id="event.id"
-              :day="getDay(event.starts_at)"
-              :month="getMonth(event.starts_at)"
-              :title="event.name"
-              :time="formatDateRange(event.starts_at, event.ends_at)"
-              :price="event.price"
-              :location="event.in_persion_location"
-              :address="event.address"
-              :mapUrl="event.location_URL"
-              :mapImage="event.cover_image_url"
-              :organizer="event.host"
-              :description="event.description"
-              :maxParticipants="event.max_attendees"
-              :currentParticipants="event.current_attendees"
-              :status="event.status === 'upcoming' ? 'open' : 'closed'"
-            />
+          <div class="bg-white">
+            <Event1Card :id="event.id" :day="getDay(event.starts_at)" :month="getMonth(event.starts_at)"
+              :title="event.name" :time="formatDateRange(event.starts_at, event.ends_at)" :price="event.price"
+              :location="event.in_persion_location" :address="event.address" :mapUrl="event.location_URL"
+              :mapImage="event.cover_image_url" :organizer="event.host" :description="event.description"
+              :maxParticipants="event.max_attendees" :currentParticipants="event.current_attendees"
+              :status="event.status === 'upcoming' ? 'open' : 'closed'" />
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+  <div class="bg-white">
     <div class="flex flex-col sm:flex-row justify-between items-start mb-4 gap-4">
       <div class="flex flex-col sm:flex-row items-start gap-4">
         <div class="bg-gray-100 dark:bg-gray-700 rounded-lg p-3 text-center min-w-[60px]">
