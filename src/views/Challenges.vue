@@ -1,100 +1,106 @@
 <template>
   <div class="challenges-container p-4">
     <h2 class="text-xl font-bold mb-4">Challenges For You</h2>
-    <h3 class="text-xl font-bold mb-4">Let's comment on posts to level up</h3>
+    <h3 class="text-lg font-semibold mb-4 text-gray-700">Let’s comment on posts to level up</h3>
 
     <div class="post-list mb-10">
-      <template v-if="loadingComments">
-        <p>Đang tải các thử thách bình luận...</p>
-      </template>
-      <template v-else-if="commentError">
-        <p class="text-red-500">{{ commentError }}</p>
-      </template>
-      <template v-else>
-        <PostItem v-for="(post, index) in commentChallenges" :key="post.id || index" :post="{
-          id: post.post_id,
-          title: 'Comment Challenge #' + post.id,
-          author: 'Community',
-          reward: { type: 'points', value: post.points_reward },
-          createdAt: post.created_at,
-          excerpt: 'You need to comment on this post to complete the challenge.',
-          joined: true,
-          requiresComment: true,
-          commented: false,
-          tags: ['commenting']
-        }" />
-      </template>
+      <p v-if="isLoadingComments" class="text-gray-500">Loading comment challenges...</p>
+      <p v-else-if="commentError" class="text-red-500">{{ commentError }}</p>
+      <PostItem
+        v-else
+        v-for="(post, index) in commentChallenges"
+        :key="post.id || index"
+        :post="mapCommentToPost(post)"
+      />
     </div>
 
-
-    <h3 class="text-xl font-bold mb-4">Join exciting events to gain experience</h3>
+    <h3 class="text-lg font-semibold mb-4 text-gray-700">Join exciting events to gain experience</h3>
     <div class="event-list space-y-4">
-      <EventItem v-if="loading" title="Loading..." :reward="{ type: 'points', value: 200 }" :loading="true" />
-      <template v-else-if="error">
-        <p class="text-red-500">{{ error }}</p>
-      </template>
-      <template v-else>
-        <EventItem v-for="(event, index) in events" :key="event.id || index" :title="event.name"
-          :reward="{ type: 'points', value: 100 }" :dueDate="event.ends_at" :joined="event.current_attendees > 0"
-          :ticketPurchased="false" :location="event.in_persion_location" :postId="index + 1" />
-      </template>
+      <EventItem
+        v-if="isLoadingEvents"
+        title="Loading..."
+        :reward="{ type: 'points', value: 200 }"
+        :loading="true"
+      />
+      <p v-else-if="eventError" class="text-red-500">{{ eventError }}</p>
+      <EventItem
+        v-else
+        v-for="(event, index) in events"
+        :key="event.id || index"
+        :title="event.name"
+        :reward="{ type: 'points', value: 100 }"
+        :dueDate="event.ends_at"
+        :joined="event.current_attendees > 0"
+        :ticketPurchased="false"
+        :location="event.in_persion_location"
+        :postId="event.post_id || index + 1"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import EventItem from '../components/EventItem.vue';
-import PostItem from '../components/PostItem.vue';
+import { defineAsyncComponent } from 'vue';
+import { fetchCommentChallenges, fetchEvents } from '../services/challengeService';
 
 export default {
   name: 'Challenges',
   components: {
-    EventItem,
-    PostItem
+    // Tải lười (lazy load)
+    PostItem: defineAsyncComponent(() => import('../components/PostItem.vue')),
+    EventItem: defineAsyncComponent(() => import('../components/EventItem.vue')),
   },
   data() {
     return {
       events: [],
       commentChallenges: [],
-      loading: true,
-      loadingComments: true,
-      error: null,
-      commentError: null
+      isLoadingEvents: true,
+      isLoadingComments: true,
+      eventError: null,
+      commentError: null,
     };
   },
   created() {
-    this.fetchEvents();
-    this.fetchCommentChallenges();
+    this.loadCommentChallenges();
+    this.loadEvents();
   },
   methods: {
-    async fetchCommentChallenges() {
+    async loadCommentChallenges() {
+      this.isLoadingComments = true;
       try {
-        const response = await fetch(
-          'https://virtserver.swaggerhub.com/copilothub/challenges123456789/1.0.0/api/challenges'
-        );
-        if (!response.ok) throw new Error('Không tải được thử thách comment');
-        const result = await response.json();
-        this.commentChallenges = (result.data || []).filter(ch => ch.type === 'comment');
+        const res = await fetchCommentChallenges();
+        this.commentChallenges = res;
       } catch (err) {
-        this.commentError = err.message;
-        console.error(err);
+        this.commentError = err?.message || 'Failed to load comment challenges';
       } finally {
-        this.loadingComments = false;
+        this.isLoadingComments = false;
       }
     },
-    async fetchEvents() {
+    async loadEvents() {
+      this.isLoadingEvents = true;
       try {
-        const response = await fetch('https://virtserver.swaggerhub.com/yuu-e71/event-api/1.0.0/events');
-        if (!response.ok) throw new Error('Failed to fetch events');
-        const data = await response.json();
-        this.events = Array.isArray(data) ? data : (data.events || []);
+        const res = await fetchEvents();
+        this.events = res;
       } catch (err) {
-        this.error = err.message;
-        console.error(err);
+        this.eventError = err?.message || 'Failed to load events';
       } finally {
-        this.loading = false;
+        this.isLoadingEvents = false;
       }
-    }
-  }
+    },
+    mapCommentToPost(post) {
+      return {
+        id: post.post_id,
+        title: `Comment Challenge #${post.id}`,
+        author: 'Community',
+        reward: { type: 'points', value: post.points_reward },
+        createdAt: post.created_at,
+        excerpt: 'You need to comment on this post to complete the challenge.',
+        joined: true,
+        requiresComment: true,
+        commented: false,
+        tags: ['commenting'],
+      };
+    },
+  },
 };
 </script>
