@@ -25,7 +25,10 @@
 
       <!-- Nội dung -->
       <div class="p-6 flex-grow flex flex-col">
+<<<<<<< HEAD
 
+=======
+>>>>>>> 717c4f23e4329cde99a7fd2709de2c931f703545
         <!-- Tiêu đề với gradient text -->
         <h3 class="title text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-indigo-600 transition-colors bg-clip-text bg-gradient-to-r from-gray-800 to-gray-900">
           {{ post.title }}
@@ -204,7 +207,11 @@ export default {
     },
     handleAction() {
       if (this.post.requiresComment && !this.post.commented) {
+<<<<<<< HEAD
         this.$router.push(`/comment/${this.post.id}`);
+=======
+        this.$router.push(`/post/${this.post.id}/comment`);
+>>>>>>> 717c4f23e4329cde99a7fd2709de2c931f703545
       } else if (this.post.status === 'done') {
         this.$router.push(`/post/${this.post.id}/detail`);
       } else if (!this.post.joined) {
