@@ -4,74 +4,39 @@
     <h3 class="text-xl font-bold mb-4">Let's comment on posts to level up</h3>
 
     <div class="post-list mb-10">
-      <!-- Các Post mẫu (giữ nguyên như bạn đã có) -->
-      <PostItem 
-        :post="{
-          id: 1,
-          title: 'Titile Post 1',
-          author: 'Đức',
-          reward: { type: 'points', value: 100 },
-          createdAt: new Date().toISOString(),
-          excerpt: 'Post excerpt goes here...',
+      <template v-if="loadingComments">
+        <p>Đang tải các thử thách bình luận...</p>
+      </template>
+      <template v-else-if="commentError">
+        <p class="text-red-500">{{ commentError }}</p>
+      </template>
+      <template v-else>
+        <PostItem v-for="(post, index) in commentChallenges" :key="post.id || index" :post="{
+          id: post.post_id,
+          title: 'Comment Challenge #' + post.id,
+          author: 'Community',
+          reward: { type: 'points', value: post.points_reward },
+          createdAt: post.created_at,
+          excerpt: 'You need to comment on this post to complete the challenge.',
           joined: true,
           requiresComment: true,
           commented: false,
-          tags: ['commenting', 'engagement']
-        }"
-      />
-      <PostItem 
-        :post="{
-          id: 2,
-          title: 'Titile Post 2',
-          author: 'Community Team',
-          reward: { type: 'points', value: 50 },
-          createdAt: new Date().toISOString(),
-          excerpt: 'Post excerpt goes here...',
-          joined: false,
-          requiresComment: false,
-          commented: false,
-          tags: ['commenting', 'engagement']
-        }"
-      />
-      <PostItem 
-        :post="{
-          id: 3,
-          title: 'Titile Post 3',
-          author: 'Community Team',
-          reward: { type: 'points', value: 100 },
-          createdAt: new Date().toISOString(),
-          excerpt: 'Post excerpt goes here...',
-          joined: true,
-          requiresComment: true,
-          commented: true,
-          tags: ['commenting', 'engagement']
-        }"
-      />
+          tags: ['commenting']
+        }" />
+      </template>
     </div>
+
 
     <h3 class="text-xl font-bold mb-4">Join exciting events to gain experience</h3>
     <div class="event-list space-y-4">
-      <EventItem
-        v-if="loading"
-        title="Loading..."
-        :reward="{ type: 'points', value: 200 }"
-        :loading="true"
-      />
+      <EventItem v-if="loading" title="Loading..." :reward="{ type: 'points', value: 200 }" :loading="true" />
       <template v-else-if="error">
         <p class="text-red-500">{{ error }}</p>
       </template>
       <template v-else>
-        <EventItem
-          v-for="(event, index) in events"
-          :key="event.id || index"
-          :title="event.name"
-          :reward="{ type: 'points', value: 100 }"
-          :dueDate="event.ends_at"
-          :joined="event.current_attendees > 0"
-          :ticketPurchased="false"
-          :location="event.in_persion_location"
-          :postId="index + 1"
-        />
+        <EventItem v-for="(event, index) in events" :key="event.id || index" :title="event.name"
+          :reward="{ type: 'points', value: 100 }" :dueDate="event.ends_at" :joined="event.current_attendees > 0"
+          :ticketPurchased="false" :location="event.in_persion_location" :postId="index + 1" />
       </template>
     </div>
   </div>
@@ -90,14 +55,33 @@ export default {
   data() {
     return {
       events: [],
+      commentChallenges: [],
       loading: true,
-      error: null
+      loadingComments: true,
+      error: null,
+      commentError: null
     };
   },
   created() {
     this.fetchEvents();
+    this.fetchCommentChallenges();
   },
   methods: {
+    async fetchCommentChallenges() {
+      try {
+        const response = await fetch(
+          'https://virtserver.swaggerhub.com/copilothub/challenges123456789/1.0.0/api/challenges'
+        );
+        if (!response.ok) throw new Error('Không tải được thử thách comment');
+        const result = await response.json();
+        this.commentChallenges = (result.data || []).filter(ch => ch.type === 'comment');
+      } catch (err) {
+        this.commentError = err.message;
+        console.error(err);
+      } finally {
+        this.loadingComments = false;
+      }
+    },
     async fetchEvents() {
       try {
         const response = await fetch('https://virtserver.swaggerhub.com/yuu-e71/event-api/1.0.0/events');
