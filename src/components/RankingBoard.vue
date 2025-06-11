@@ -14,19 +14,11 @@
           <table class="min-w-[1000px] w-full border-collapse text-center">
             <thead class="sticky top-0 bg-black text-white z-10">
               <tr>
-<<<<<<< HEAD
                 <th class="border border-gray-300 p-3 sm:p-4 w-[7%] text-sm sm:text-base font-semibold">Xếp hạng</th>
                 <th class="border border-gray-300 p-3 sm:p-4 w-[10%] text-sm sm:text-base font-semibold">Avatar</th>
                 <th class="border border-gray-300 p-3 sm:p-4 w-[38%] text-sm sm:text-base font-semibold">Tên</th>
                 <th class="border border-gray-300 p-3 sm:p-4 w-[25%] text-sm sm:text-base font-semibold">Level</th>
                 <th class="border border-gray-300 p-3 sm:p-4 w-[20%] text-sm sm:text-base font-semibold">Points</th>
-=======
-                <th class="border border-gray-300 p-2 sm:p-3 w-auto sm:w-[7%] text-sm sm:text-base">Rank</th>
-                <th class="border border-gray-300 p-2 sm:p-3 w-auto sm:w-[10%] text-sm sm:text-base">Avatar</th>
-                <th class="border border-gray-300 p-2 sm:p-3 w-auto sm:w-[38%] text-sm sm:text-base">Name</th>
-                <th class="border border-gray-300 p-2 sm:p-3 w-auto sm:w-[25%] text-sm sm:text-base">Level</th>
-                <th class="border border-gray-300 p-2 sm:p-3 w-auto sm:w-[25%] text-sm sm:text-base">Points</th>
->>>>>>> 717c4f23e4329cde99a7fd2709de2c931f703545
               </tr>
             </thead>
             <tbody>
@@ -97,13 +89,8 @@
                     >
                       Level {{ user.level }}
                     </div>
-<<<<<<< HEAD
                     <div class="text-sm text-gray-600 mt-1">
                       Cần {{ calculateNextLevelPoints(user.level) }} pts để lên Level {{ user.level + 1 }}
-=======
-                    <div class="text-xs sm:text-sm text-gray-600 mt-1">
-                      Need {{ calculateNextLevelPoints(user.level) }} pts to level up {{ user.level + 1 }}
->>>>>>> 717c4f23e4329cde99a7fd2709de2c931f703545
                     </div>
                     <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
                       <div

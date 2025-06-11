@@ -6,7 +6,6 @@
     <div class="post-list mb-10">
       <!-- Các Post mẫu (giữ nguyên như bạn đã có) -->
       <PostItem 
-<<<<<<< HEAD
         :post="{
           id: 1,
           title: 'Titile Post 1',
@@ -48,86 +47,13 @@
           tags: ['commenting', 'engagement']
         }"
       />
-=======
-          :post="{
-            id: 1,
-            title: 'Tran Nguyen Gia Huy 221403 find a lover for rest of life',
-            author: 'Đức',
-            reward: { type: 'points', value: 100 },
-            createdAt: new Date().toISOString(),
-            excerpt: 'Post excerpt goes here...',
-            joined: true,
-            requiresComment: true,
-            commented: false,
-            tags: ['commenting', 'engagement']
-          }"
-        />
-        <PostItem 
-          :post="{   
-            id: 2,
-            title: 'Thien An writes an open letter to Jack and their daughter Sol.',
-            author: 'Community Team',
-            reward: { type: 'points', value: 50 },
-            createdAt: new Date().toISOString(),
-            excerpt: 'Post excerpt goes here...',
-            joined: false,
-            requiresComment: false,
-            commented: false,
-            tags: ['commenting', 'engagement']
-          }"
-        />
-        <PostItem 
-          :post="{   
-            id: 3,
-            title: 'Ronaldo nets his 937th career goal.',
-            author: 'Community Team',
-            reward: { type: 'points', value: 50 },
-            createdAt: new Date().toISOString(),
-            excerpt: 'Post excerpt goes here...',
-            joined: true,
-            requiresComment: true,
-            commented: true,
-            tags: ['commenting', 'engagement']
-          }"
-        />
->>>>>>> 717c4f23e4329cde99a7fd2709de2c931f703545
     </div>
 
     <h3 class="text-xl font-bold mb-4">Join exciting events to gain experience</h3>
     <div class="event-list space-y-4">
       <EventItem
-<<<<<<< HEAD
         v-if="loading"
         title="Loading..."
-=======
-        title="Event at Ho Chi Minh City"
-        :reward="{ type: 'points', value: 100 }"
-        dueDate="2024-06-30T23:59:59"
-        :joined="false"
-        :ticketPurchased="false"
-        location="Ho Chi Minh City Youth Cultural House"
-        :postId="4"
-      />
-
-      <EventItem
-        title="Vietnam Sport Show 2025"
-        :reward="{ type: 'points', value: 200 }"
-        dueDate="2025-06-30T23:59:59"
-        :ticketPurchased="false"
-        :joined="false"
-        :postId="5"
-      />
-      <EventItem
-        title="GrowthVerse Summit 2025"
-        :reward="{ type: 'voucher' }"
-        status="done"
-        :joined="true"
-        :postId="6"
-      />
-
-      <EventItem
-        title="Loading...."
->>>>>>> 717c4f23e4329cde99a7fd2709de2c931f703545
         :reward="{ type: 'points', value: 200 }"
         :loading="true"
       />
