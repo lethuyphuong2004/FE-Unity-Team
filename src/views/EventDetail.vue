@@ -4,7 +4,7 @@
       <img :src="event.cover_image_url" :alt="event.title"
         class="w-full max-h-[400px] object-cover rounded-xl transition-transform duration-300 hover:scale-105" />
     </div>
-    <h1 class="text-3xl font-bold text-left dark:text-white">{{ event.name }}</h1>
+    <h1 class="text-3xl font-bold text-left dark:text-white">{{ event.ten_events }}</h1>
     <p class="text-lg text-gray-600 dark:text-gray-300 text-left">{{ event.description }}</p>
 
     <!-- Responsive Button -->
@@ -41,12 +41,12 @@ export default {
     async fetchEventDetail() {
       const id = this.$route.params.id;
       try {
-        const response = await fetch(`https://virtserver.swaggerhub.com/yuu-e71/event-api/1.0.0/events/${id}`);
+        const response = await fetch(`https://be-legion.onrender.com/api/events/${id}`);
         if (!response.ok) {
           throw new Error(`Lỗi HTTP: ${response.status}`);
         }
         const data = await response.json();
-        this.event = data;
+        this.event = data.data || data;
       } catch (error) {
         console.error('Lỗi khi tải chi tiết sự kiện:', error);
       }

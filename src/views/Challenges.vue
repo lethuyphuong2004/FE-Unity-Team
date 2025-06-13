@@ -26,8 +26,8 @@
       <EventItem
         v-else
         v-for="(event, index) in events"
-        :key="event.id || index"
-        :title="event.name"
+        :key="event.event_id || index"
+        :title="event.ten_events"
         :reward="{ type: 'points', value: 100 }"
         :dueDate="event.ends_at"
         :joined="event.current_attendees > 0"

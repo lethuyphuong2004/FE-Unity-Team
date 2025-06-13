@@ -13,22 +13,24 @@
         </div>
       </div>
 
-    <div class="flex flex-row gap-4 items-center">
-      <!-- Price với icon -->
-      <div class="flex items-center gap-1 px-3 py-1.5 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 rounded-full text-sm font-medium">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-600 dark:text-gray-300" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M4 4h16v3a2 2 0 100 4v2a2 2 0 100 4v3H4v-3a2 2 0 100-4v-2a2 2 0 100-4V4zm2 2v1.126a4.001 4.001 0 010 7.748V16h12v-1.126a4.001 4.001 0 010-7.748V6H6z"/>
-        </svg>
-        <span>{{ formatPrice(price) }}</span>
+      <div class="flex flex-row gap-4 items-center">
+        <!-- Price với icon -->
+        <div
+          class="flex items-center gap-1 px-3 py-1.5 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 rounded-full text-sm font-medium">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-600 dark:text-gray-300" viewBox="0 0 24 24"
+            fill="currentColor">
+            <path
+              d="M4 4h16v3a2 2 0 100 4v2a2 2 0 100 4v3H4v-3a2 2 0 100-4v-2a2 2 0 100-4V4zm2 2v1.126a4.001 4.001 0 010 7.748V16h12v-1.126a4.001 4.001 0 010-7.748V6H6z" />
+          </svg>
+          <span>{{ formatPrice(price) }}</span>
+        </div>
+        <!-- Nút RSVP -->
+        <button
+          class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded transition-colors duration-300"
+          :disabled="status !== 'open'" :class="{ 'opacity-50 cursor-not-allowed': status !== 'open' }">
+          {{ status === 'open' ? 'RSVP' : 'Closed' }}
+        </button>
       </div>
-      <!-- Nút RSVP -->
-      <button
-        class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded transition-colors duration-300"
-        :disabled="status !== 'open'"
-        :class="{ 'opacity-50 cursor-not-allowed': status !== 'open' }">
-        {{ status === 'open' ? 'RSVP' : 'Closed' }}
-      </button>
-    </div>
     </div>
 
 
@@ -54,12 +56,14 @@
 <script setup>
 import { computed } from 'vue';
 
-function formatPrice(value) {
-  return new Intl.NumberFormat('vi-VN', {
-    style: 'currency',
-    currency: 'VND',
-    maximumFractionDigits: 0,
-  }).format(value);
+function formatPrice(price) {
+  if (!price || price.toLowerCase().includes('miễn phí')) return 'Miễn phí';
+
+  // Lấy số từ chuỗi kiểu '200,000 VND'
+  const numericPart = price.replace(/[^\d]/g, '');
+
+  const formatted = Number(numericPart).toLocaleString('vi-VN') + '₫';
+  return formatted;
 }
 
 const props = defineProps({

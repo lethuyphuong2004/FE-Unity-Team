@@ -15,7 +15,7 @@
 
       <!-- Event list -->
       <div v-else class="flex flex-col gap-10">
-        <div v-for="event in events" :key="event.id"
+        <div v-for="event in events" :key="event.event_id"
           class="bg-white dark:bg-gray-800 shadow-md rounded-xl transition-shadow duration-200 hover:shadow-lg p-4 sm:p-6 space-y-6">
           <div class="p-4 sm:p-6">
             <img
@@ -23,30 +23,29 @@
               alt="Event Banner"
               class="w-full max-h-[300px] object-cover rounded-xl mb-4 cursor-pointer"
               loading="lazy"
-              @click="goToDetail(event.id)"
+              @click="goToDetail(event.event_id)"
             />
             <h2 class="text-2xl font-bold mb-2 text-indigo-700 dark:text-indigo-300 cursor-pointer"
-                @click="goToDetail(event.id)">
-              {{ event.name }}
+                @click="goToDetail(event.event_id)">
+              {{ event.ten_events }}
             </h2>
             <p class="text-gray-600 dark:text-gray-300 mb-4 line-clamp-4 cursor-pointer" @click="goToDetail(event.id)">
               {{ event.description }}
             </p>
             <span class="text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer"
-                  @click="goToDetail(event.id)">
+                  @click="goToDetail(event.event_id)">
               More Details
             </span>
           </div>
           <hr class="border-t border-gray-300 dark:border-gray-600 my-4" />
           <Event1Card
-            :id="event.id"
+            :id="event.event_id"
             :day="getDay(event.starts_at)"
             :month="getMonth(event.starts_at)"
-            :title="event.name"
+            :title="event.ten_events"
             :time="formatDateRange(event.starts_at, event.ends_at)"
             :price="event.price"
-            :location="event.in_persion_location"
-            :address="event.address"
+            :location="event.in_person_location"
             :mapUrl="event.location_URL"
             :mapImage="event.cover_image_url"
             :organizer="event.host"
@@ -83,10 +82,11 @@ export default {
   methods: {
     async fetchEventData() {
       try {
-        const response = await fetch('https://virtserver.swaggerhub.com/yuu-e71/event-api/1.0.0/events');
+        const response = await fetch('https://be-legion.onrender.com/api/events');
         if (!response.ok) throw new Error('Không thể tải dữ liệu sự kiện.');
         const data = await response.json();
-        this.events = Array.isArray(data) ? data : (data.events || []);
+        this.events = Array.isArray(data.data) ? data.data : []; // dòng đúng
+
       } catch (err) {
         this.error = err.message;
       } finally {

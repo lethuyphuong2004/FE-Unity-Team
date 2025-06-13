@@ -125,7 +125,6 @@ import { ref, computed, onMounted } from 'vue';
 const rankingData = ref([]);
 const loading = ref(true);
 const error = ref(null);
-
 // Giả lập user hiện tại
 const currentUserID = 1;
 

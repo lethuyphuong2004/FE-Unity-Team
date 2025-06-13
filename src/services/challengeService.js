@@ -11,10 +11,10 @@ export async function fetchCommentChallenges() {
 
 export async function fetchEvents() {
   try {
-    const res = await fetch('https://virtserver.swaggerhub.com/yuu-e71/event-api/1.0.0/events');
+    const res = await fetch('https://be-legion.onrender.com/api/events');
     if (!res.ok) throw new Error('Failed to load events');
     const data = await res.json();
-    return Array.isArray(data) ? data : data.events || [];
+    return Array.isArray(data.data) ? data.data : [];
   } catch (error) {
     throw { eventError: error.message };
   }
