@@ -90,13 +90,13 @@ export default {
       });
     },
     handleImageError(event) {
-      event.target.src = 'https://via.placeholder.com/300';
+      event.target.src = 'https://i.pravatar.cc/300';
     }
   },
   async created() {
     const userID = this.$route.params.id;
     try {
-      const response = await fetch(`https://virtserver.swaggerhub.com/404-aaa/API_USER/1.0.0/${userID}`);
+      const response = await fetch(`https://virtserver.swaggerhub.com/404-Found/API_USER/1.0.0/api/users/${userID}`);
       if(!response.ok){
         throw new Error(`HTTP error! Status : ${response.status}`);
       }
@@ -110,14 +110,16 @@ export default {
       const data = result.data;
 
       this.user = {
-        memberID: data.community_member_id || '',
-        name: `${data.first_name || ''} ${data.last_name || ''}`.trim() || 'Unknown',
-        avtURL: data.avatar_url && data.avatar_url !== 'string' ? data.avatar_url: 'https://i.pinimg.com/736x/f7/cf/ff/f7cfff1b6a2188e086c497c832b909cb.jpg' ,
-        createdAt: data.created_at || '',
-        location: data.location || 'Chưa cập nhật',
-        headline: data.description || 'Headline không có sẵn',
-        level: data.current_level_name || 'Chưa cập nhật'
-      }
+  memberID: data.community_member_id || '',
+  name: `${data.first_name || ''} ${data.last_name || ''}`.trim() || data.ten_community_members || 'Unknown',
+  avtURL: data.avatar_url && data.avatar_url !== 'string' ? data.avatar_url : 'https://i.pravatar.cc/300',
+  createdAt: data.created_at || '',
+  location: data.location || 'Chưa cập nhật',
+  headline: data.description || 'Headline không có sẵn',
+  level: data.current_level_name || 'Chưa cập nhật',
+  points: data.total_points || 0,
+  pointsToNextLevel: data.points_to_next_level || 0
+}
 
      
       this.loading = false;
@@ -129,25 +131,6 @@ export default {
     }
   }
 
-  // async created() {
-  //   try {
-  //     const response = await fetch('/about.json');
-  //     console.log('Response status:', response.status);
-  //     if (!response.ok) {
-  //       throw new Error(`HTTP error! Status: ${response.status}`);
-  //     }
-  //     const text = await response.text();
-  //     console.log('Response text:', text);
-  //     const data = JSON.parse(text);
-  //     console.log('Parsed data:', data);
-  //     this.user = data[0];
-  //     this.loading = false;
-  //   } catch (err) {
-  //     this.error = `Không thể tải thông tin người dùng: ${err.message}`;
-  //     this.loading = false;
-  //     console.error('Lỗi:', err);
-  //   }
-  // }
 };
 </script>
 

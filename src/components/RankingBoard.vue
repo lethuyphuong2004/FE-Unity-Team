@@ -90,12 +90,13 @@
                       Level {{ user.level }}
                     </div>
                     <div class="text-sm text-gray-600 mt-1">
-                      Cần {{ calculateNextLevelPoints(user.level) }} pts để lên Level {{ user.level + 1 }}
+                      Cần {{ user.pointsToNextLevel }} pts để lên Level {{ user.level + 1 }}
                     </div>
                     <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
                       <div
                         class="h-2 rounded-full bg-gradient-to-r from-red-600 to-red-400 transition-all duration-300"
-                        :style="{ width: calculateLevelProgress(user.points, user.level) + '%' }"
+                        :style="{ width: calculateLevelProgress(user) + '%' }"
+
                       ></div>
                     </div>
                   </div>
@@ -126,21 +127,22 @@ const loading = ref(true);
 const error = ref(null);
 
 // Giả lập user hiện tại
-const currentUserID = 0;
+const currentUserID = 1;
 
 onMounted(async () => {
   try {
-    const response = await fetch('https://virtserver.swaggerhub.com/404-aaa/API_USER/1.0.0/alluser');
+    const response = await fetch('https://virtserver.swaggerhub.com/404-Found/API_USER/1.0.0/api/users/alluser');
     if (!response.ok) throw new Error('Không thể tải dữ liệu.');
     const result = await response.json();
     
-    if (result.data) {
-      rankingData.value = result.data.map(user => ({
-        memberID: user.community_member_id,
-        name: `${user.first_name} ${user.last_name}`.trim(),
-        avtURL: user.avatar_url && user.avatar_url !== 'string' ? user.avatar_url : 'https://i.pravatar.cc/300',
-        level: user.current_level,
-        points: user.total_points
+      if (result.data) {
+    rankingData.value = result.data.map(user => ({
+      memberID: user.community_member_id,
+      name: user.ten_community_members || `${user.first_name} ${user.last_name}`.trim(),
+      avtURL: user.avatar_url && user.avatar_url !== 'string' ? user.avatar_url : 'https://i.pravatar.cc/300',
+      level: parseInt(user.current_level_name.replace('Level ', '')) || 1,
+      points: user.total_points,
+      pointsToNextLevel: user.points_to_next_level
       }));
     }
     loading.value = false;
@@ -168,19 +170,19 @@ const displayedRankingData = computed(() => {
   return sortedRankingData.value.slice(start, end);
 });
 
-const calculateNextLevelPoints = (currentLevel) => {
-  return (currentLevel + 1) * 100;
+
+
+const calculateLevelProgress = (user) => {
+  const gained = user.points;
+  const needed = user.pointsToNextLevel;
+
+  if (!gained || !needed || gained >= needed) return 100;
+  return Math.floor((gained / needed) * 100);
 };
 
-const calculateLevelProgress = (currentPoints, currentLevel) => {
-  const nextLevelPoints = calculateNextLevelPoints(currentLevel);
-  const currentLevelPoints = currentLevel * 100;
-  const pointsNeeded = nextLevelPoints - currentLevelPoints;
-  const pointsGained = currentPoints - currentLevelPoints;
-  return Math.min(Math.floor((pointsGained / pointsNeeded) * 100), 100);
-};
+
 </script>
 
 <style scoped>
-/* Tailwind CSS đã được sử dụng inline, nhưng thêm style tùy chỉnh nếu cần */
+
 </style>

@@ -13,17 +13,22 @@
         </div>
       </div>
 
-      <div class="flex flex-col items-start sm:items-end">
-        <span class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">{{ formatPrice(price) }}</span>
-        <button
-          class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded transition-colors duration-300 w-full sm:w-auto"
-          :disabled="status !== 'open'" :class="{ 'opacity-50 cursor-not-allowed': status !== 'open' }">
-          {{ status === 'open' ? 'RSVP' : 'Closed' }}
-        </button>
-        <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">
-          {{ currentParticipants }}/{{ maxParticipants }} participants
-        </p>
+    <div class="flex flex-row gap-4 items-center">
+      <!-- Price với icon -->
+      <div class="flex items-center gap-1 px-3 py-1.5 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 rounded-full text-sm font-medium">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-600 dark:text-gray-300" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M4 4h16v3a2 2 0 100 4v2a2 2 0 100 4v3H4v-3a2 2 0 100-4v-2a2 2 0 100-4V4zm2 2v1.126a4.001 4.001 0 010 7.748V16h12v-1.126a4.001 4.001 0 010-7.748V6H6z"/>
+        </svg>
+        <span>{{ formatPrice(price) }}</span>
       </div>
+      <!-- Nút RSVP -->
+      <button
+        class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded transition-colors duration-300"
+        :disabled="status !== 'open'"
+        :class="{ 'opacity-50 cursor-not-allowed': status !== 'open' }">
+        {{ status === 'open' ? 'RSVP' : 'Closed' }}
+      </button>
+    </div>
     </div>
 
 
@@ -37,7 +42,7 @@
         <p class="text-gray-600 dark:text-gray-300">{{ address }}</p>
         <p class="text-gray-600 dark:text-gray-300 mt-2">{{ description }}</p>
         <a :href="mapUrl" target="_blank"
-          class="text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 mt-2 inline-block transition-colors duration-300">
+          class="text-red-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 mt-2 inline-block transition-colors duration-300">
           View Map
         </a>
       </div>
