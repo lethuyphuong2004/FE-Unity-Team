@@ -19,7 +19,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-600 dark:text-gray-300" viewBox="0 0 24 24" fill="currentColor">
           <path d="M4 4h16v3a2 2 0 100 4v2a2 2 0 100 4v3H4v-3a2 2 0 100-4v-2a2 2 0 100-4V4zm2 2v1.126a4.001 4.001 0 010 7.748V16h12v-1.126a4.001 4.001 0 010-7.748V6H6z"/>
         </svg>
-        <span>{{ formatPrice(price) }}</span>
+        <span>{{ price }}</span>
       </div>
       <!-- Nút RSVP -->
       <button
