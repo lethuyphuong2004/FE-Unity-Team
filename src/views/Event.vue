@@ -25,14 +25,14 @@
               loading="lazy"
               @click="goToDetail(event.id)"
             />
-            <h2 class="text-2xl font-bold mb-2 text-indigo-700 dark:text-indigo-300 cursor-pointer"
+            <h2 class="text-2xl font-bold mb-2 text-black dark:text-white cursor-pointer"
                 @click="goToDetail(event.id)">
               {{ event.name }}
             </h2>
             <p class="text-gray-600 dark:text-gray-300 mb-4 line-clamp-4 cursor-pointer" @click="goToDetail(event.id)">
               {{ event.description }}
             </p>
-            <span class="text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer"
+            <span class="text-black dark:text-white hover:underline cursor-pointer"
                   @click="goToDetail(event.id)">
               More Details
             </span>
@@ -63,7 +63,6 @@
 
 <script>
 import Event1Card from '../components/Event1Card.vue';
-// import Event1List if needed
 
 export default {
   name: 'ComEvent',
@@ -78,7 +77,7 @@ export default {
     };
   },
   created() {
-    this.fetchEventData(); // Bắt đầu tải sớm hơn
+    this.fetchEventData();
   },
   methods: {
     async fetchEventData() {

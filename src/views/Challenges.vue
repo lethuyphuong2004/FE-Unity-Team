@@ -94,11 +94,10 @@ export default {
         author: 'Community',
         reward: { type: 'points', value: post.points_reward },
         createdAt: post.created_at,
-        excerpt: 'You need to comment on this post to complete the challenge.',
         joined: true,
         requiresComment: true,
         commented: false,
-        tags: ['commenting'],
+       
       };
     },
   },
