@@ -1,5 +1,16 @@
 <template>
-  <div v-if="event" class="max-w-3xl mx-auto p-4 flex flex-col gap-8 font-sans">
+  <!--  Skeleton Loading -->
+  <div v-if="loading" class="max-w-3xl mx-auto p-4 flex flex-col gap-8 font-sans animate-pulse">
+    <div class="h-[240px] bg-gray-200 dark:bg-gray-700 rounded-xl"></div>
+    <div class="h-8 bg-gray-300 dark:bg-gray-600 rounded w-3/4"></div>
+    <div class="h-4 bg-gray-200 dark:bg-gray-600 rounded w-full"></div>
+    <div class="h-4 bg-gray-200 dark:bg-gray-600 rounded w-5/6"></div>
+    <div class="h-4 bg-gray-200 dark:bg-gray-600 rounded w-2/3"></div>
+    <div class="h-10 w-32 bg-gray-300 dark:bg-gray-700 rounded-full mt-6"></div>
+  </div>
+
+  <!-- Real Content -->
+  <div v-else-if="event" class="max-w-3xl mx-auto p-4 flex flex-col gap-8 font-sans">
     <!-- Banner -->
     <div class="overflow-hidden rounded-xl">
       <img :src="event.cover_image_url" :alt="event.ten_events"
@@ -22,20 +33,9 @@
     </div>
   </div>
 
-  <!-- Error -->
+  <!--  Error -->
   <div v-else-if="errorMessage" class="text-red-600 bg-red-100 dark:bg-red-900 dark:text-red-300 p-4 rounded-lg text-center">
     {{ errorMessage }}
-  </div>
-
-  <!-- Loading Spinner -->
-  <div v-else class="text-center p-8 text-gray-500 dark:text-gray-300 font-medium">
-    <svg class="animate-spin h-6 w-6 mx-auto text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none"
-         viewBox="0 0 24 24">
-      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
-      <path class="opacity-75" fill="currentColor"
-            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"/>
-    </svg>
-    <p class="mt-2">Đang tải chi tiết sự kiện...</p>
   </div>
 </template>
 
@@ -47,7 +47,8 @@ export default {
   data() {
     return {
       event: null,
-      errorMessage: ''
+      errorMessage: '',
+      loading: true
     };
   },
   mounted() {
@@ -61,10 +62,11 @@ export default {
         this.event = event;
       } catch (error) {
         console.error('Lỗi khi tải chi tiết sự kiện:', error);
-        this.errorMessage = 'Không thể tải chi tiết sự kiện. Vui lòng thử lại sau.';
+        this.errorMessage = 'Unable to load event details. Please try again later.';
+      } finally {
+        this.loading = false;
       }
     },
   },
 };
 </script>
-

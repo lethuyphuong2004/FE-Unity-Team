@@ -158,7 +158,6 @@ export default {
     handleAction() {
       if (!this.joined) {
         alert('Bạn đã tham gia thử thách!');
-        // TODO: Gọi API hoặc emit sự kiện tham gia
       } else if (this.postId) {
         this.$router.push(`/post/${this.postId}/comment`);
       }
