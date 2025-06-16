@@ -16,8 +16,8 @@
       <PostItem
         v-else
         v-for="(challenge, index) in commentChallenges"
-        :key="challenge.post_challenge_id || index"
-        :post="mapCommentToPost(challenge)"
+        :key="challenge.id || index"
+        :post="challenge"
       />
     </div>
 
@@ -38,7 +38,11 @@
         v-for="(eventChallenge, index) in eventChallenges"
         :key="eventChallenge.post_challenge_id || index"
         :title="eventChallenge.event?.ten_events"
-        :reward="{ type: 'points', value: eventChallenge.points_reward }"
+        :reward="{
+          type: 'points',
+          value: eventChallenge.points_reward,
+          highlight: eventChallenge.event?.current_attendees > 0 || eventChallenge.event?.status === 'done'
+        }"
         :dueDate="eventChallenge.event?.ends_at"
         :joined="eventChallenge.event?.current_attendees > 0"
         :ticketPurchased="false"
@@ -51,7 +55,7 @@
 
 <script>
 import { defineAsyncComponent } from 'vue';
-import { fetchCommentChallenges } from '../services/apiService';
+import { fetchCommentChallenges, fetchEventChallenges } from '../services/apiService';
 
 export default {
   name: 'Challenges',
@@ -77,18 +81,16 @@ export default {
       this.isLoadingComments = true;
       this.isLoadingEvents = true;
       try {
-        const res = await fetchCommentChallenges();
+        const [commentRes, eventRes] = await Promise.all([
+          fetchCommentChallenges(),
+          fetchEventChallenges()
+        ]);
 
-        // Mapping & sort comment challenges
-        const mappedComments = res
-          .filter(item => item.type === 'comment')
-          .map(challenge => this.mapCommentToPost(challenge))
-          .sort((a, b) => (a.joined === b.joined ? 0 : a.joined ? 1 : -1)); // chưa tham gia lên trước
+        const mappedComments = commentRes.map(challenge => this.mapCommentToPost(challenge))
+          .sort((a, b) => (a.joined === b.joined ? 0 : a.joined ? 1 : -1));
 
         this.commentChallenges = mappedComments;
-
-        // Event challenges giữ nguyên
-        this.eventChallenges = res.filter(item => item.type === 'event');
+        this.eventChallenges = eventRes;
       } catch (err) {
         this.commentError = true;
         this.eventError = true;
@@ -97,25 +99,30 @@ export default {
         this.isLoadingEvents = false;
       }
     },
+
     mapCommentToPost(challenge) {
       const post = challenge.post;
       return {
-        id: post.post_id,
+        id: challenge.post_challenge_id,
         title: post.ten_posts || `Comment Challenge #${challenge.post_challenge_id}`,
         author: post.user_name || 'Unknown',
-        reward: { type: 'points', value: challenge.points_reward },
+        reward: {
+          type: 'points',
+          value: challenge.points_reward,
+          highlight: post.comments_count > 0
+        },
         createdAt: post.created_at,
-        joined: false, // mặc định chưa tham gia
+        joined: post.comments_count > 0,
         requiresComment: true,
-        commented: false,
+        commented: post.comments_count > 0,
         url: post.url,
         avatar: post.user_avatar_url,
         tags: post.tags || [],
-        excerpt: post.excerpt || '',
-        status: post.status || '',
-        dueDate: post.ends_at || ''
+        excerpt: post.body?.replace(/<[^>]*>/g, '').slice(0, 150) || '',
+        status: post.comments_count > 0 ? 'done' : '',
+        dueDate: challenge.due_date
       };
     }
-  },
+  }
 };
 </script>

@@ -46,17 +46,18 @@
 
         <!-- Điểm thưởng + hạn -->
         <div class="challenge-info flex justify-between items-center mb-4">
-          <div
-            class="reward-points flex items-center bg-gradient-to-br from-amber-50 to-amber-100 px-3 py-1.5 rounded-full border border-amber-100 shadow-sm">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-500 mr-1.5" viewBox="0 0 20 20"
+          <div class="reward-points flex items-center px-3 py-1.5 rounded-full border border-gray-200 shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400 mr-1.5" viewBox="0 0 20 20"
               fill="currentColor">
               <path
                 d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
             </svg>
-            <span class="font-medium text-amber-800">{{ rewardText }}</span>
+            <span class="font-medium text-black">
+              {{ rewardText }}
+            </span>
           </div>
 
-          <div v-if="post.dueDate"
+          <div v-if="post.dueDate && post.status !== 'done'"
             class="due-date flex items-center text-sm bg-gradient-to-br from-rose-50 to-rose-100 px-3 py-1.5 rounded-full border border-rose-100 shadow-sm">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-rose-500 mr-1.5" viewBox="0 0 20 20"
               fill="currentColor">
@@ -64,28 +65,21 @@
                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
                 clip-rule="evenodd" />
             </svg>
-            <span class="text-rose-700">Exp: {{ formattedDueDate }}</span>
+            <span class="text-rose-700">Expired: {{ formattedDueDate }}</span>
           </div>
         </div>
 
         <!-- Mô tả -->
         <p class="text-gray-600 mb-5 line-clamp-3 flex-grow">{{ post.excerpt }}</p>
 
-        <!-- Tags -->
-        <div class="tags flex flex-wrap gap-2 mb-4">
-          <span v-for="(tag, index) in post.tags" :key="index"
-            class="tag bg-gray-100 text-gray-800 text-xs px-3 py-1 rounded-full hover:bg-gray-200 transition-colors border border-gray-200 shadow-sm">
-            #{{ tag }}
-          </span>
-        </div>
 
         <!-- Nút hành động -->
         <button v-if="showButton"
           class="action-button w-full py-3 px-4 rounded-lg font-medium transition-all duration-300 mt-auto relative overflow-hidden group"
           :class="buttonClass" @click.stop="handleAction">
           <span class="relative z-10 flex items-center justify-center">
-            <svg v-if="post.requiresComment && !post.commented" xmlns="http://www.w3.org/2000/svg"
-              class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <svg v-if="post.requiresComment && !post.commented" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2"
+              viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd"
                 d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z"
                 clip-rule="evenodd" />
@@ -96,15 +90,16 @@
                 d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                 clip-rule="evenodd" />
             </svg>
-            <svg v-else-if="!post.joined" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2"
-              viewBox="0 0 20 20" fill="currentColor">
+            <svg v-else-if="!post.joined" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20"
+              fill="currentColor">
               <path fill-rule="evenodd"
                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
                 clip-rule="evenodd" />
             </svg>
             {{ buttonText }}
           </span>
-          <span class="absolute inset-0 bg-gradient-to-r opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          <span
+            class="absolute inset-0 bg-gradient-to-r opacity-0 group-hover:opacity-100 transition-opacity duration-300"
             :class="buttonHoverClass"></span>
         </button>
       </div>
@@ -136,7 +131,11 @@ export default {
     formattedDueDate() {
       if (!this.post.dueDate) return '';
       const date = new Date(this.post.dueDate);
-      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
     },
     buttonText() {
       if (this.post.requiresComment && !this.post.commented) return 'Comment on this post';
@@ -180,23 +179,27 @@ export default {
 .thumbnail-container {
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
+
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
 .line-clamp-3 {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
 .bg-clip-text {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
+
 .action-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
