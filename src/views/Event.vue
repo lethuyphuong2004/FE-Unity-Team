@@ -6,7 +6,7 @@
       <!-- Error -->
       <div v-if="error"
         class="text-red-600 bg-red-100 dark:bg-red-900 dark:text-red-300 p-4 rounded-lg text-center font-medium">
-         An error has occurred. Please try again later.
+        An error has occurred. Please try again later.
       </div>
 
 
@@ -22,26 +22,27 @@
         </div>
       </div>
 
-
       <!-- Event list -->
       <div v-else class="flex flex-col gap-10">
         <div v-for="event in events" :key="event.event_id"
-          class="bg-white dark:bg-gray-800 shadow-md rounded-xl transition-shadow duration-200 hover:shadow-lg p-4 sm:p-6 space-y-6">
+          class="bg-white dark:bg-gray-800 shadow-md rounded-xl transition-all duration-300 ease-in-out transform hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.02] hover:bg-gray-50 dark:hover:bg-gray-700 p-4 sm:p-6 space-y-6 cursor-pointer">
           <div class="p-4 sm:p-6">
+            
             <img :src="event.cover_image_url" alt="Event Banner"
-              class="w-full max-h-[300px] object-cover rounded-xl mb-4 cursor-pointer" loading="lazy"
-              @click="goToDetail(event.event_id)" />
+              class="w-full max-h-[300px] object-cover rounded-xl mb-4 cursor-pointer transition-transform duration-300 ease-in-out hover:scale-[1.01]"
+              loading="lazy" @click="goToDetail(event.event_id)" />
 
-            <h2 class="text-2xl font-bold mb-2 text-indigo-700 dark:text-indigo-300 cursor-pointer"
-              @click="goToDetail(event.event_id)">
+            <h2 class="text-2xl font-bold mb-2 text-black cursor-pointer" @click="goToDetail(event.event_id)">
               {{ event.ten_events }}
             </h2>
+
             <p class="text-gray-600 dark:text-gray-300 mb-4 line-clamp-4 cursor-pointer" @click="goToDetail(event.id)">
               {{ event.description }}
             </p>
+            
             <span class="text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer"
               @click="goToDetail(event.event_id)">
-              More Details
+              More Details...
             </span>
           </div>
           <hr class="border-t border-gray-300 dark:border-gray-600 my-4" />
