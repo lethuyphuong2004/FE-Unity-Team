@@ -1,13 +1,18 @@
 <template>
   <!-- Skeleton loading khi chờ dữ liệu -->
+  <!-- Skeleton loading khi chờ dữ liệu -->
   <div v-if="loading"
-    class="rounded-2xl p-6 mb-6 bg-gradient-to-br from-gray-50 to-gray-100 animate-pulse overflow-hidden relative">
-    <div
-      class="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent -skew-x-12 animate-shine" />
-    <div class="h-5 bg-gray-200 rounded-full mb-4 w-[70%]"></div>
-    <div class="h-3 bg-gray-200 rounded-full mb-3 w-[50%]"></div>
-    <div class="h-3 bg-gray-200 rounded-full w-[60%]"></div>
+    class="rounded-2xl p-6 mb-6 bg-white/70 dark:bg-gray-800 animate-pulse overflow-hidden border border-gray-200 dark:border-white/10 shadow-sm relative space-y-4">
+    <div class="h-6 w-3/4 bg-gray-200 dark:bg-gray-600 rounded"></div>
+    <div class="h-4 w-1/2 bg-gray-200 dark:bg-gray-700 rounded"></div>
+    <div class="h-4 w-1/3 bg-gray-200 dark:bg-gray-700 rounded"></div>
+    <div class="flex items-center justify-between">
+      <div class="h-4 w-24 bg-gray-200 dark:bg-gray-700 rounded"></div>
+      <div class="h-4 w-16 bg-gray-200 dark:bg-gray-700 rounded"></div>
+    </div>
+    <div class="h-10 w-32 bg-gray-300 dark:bg-gray-600 rounded-full mt-4"></div>
   </div>
+
 
   <!-- Component chính khi có dữ liệu -->
   <div v-else

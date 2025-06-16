@@ -6,7 +6,7 @@
       <!-- Error -->
       <div v-if="error"
         class="text-red-600 bg-red-100 dark:bg-red-900 dark:text-red-300 p-4 rounded-lg text-center font-medium">
-        ⚠️ Đã xảy ra lỗi. Vui lòng thử lại sau.
+         An error has occurred. Please try again later.
       </div>
 
 
